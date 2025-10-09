@@ -1,0 +1,5 @@
+streamlit # last version
+extra-streamlit-components-better-cookie-manager # for cookies
+google-genai
+pandas
+PyMuPDF
