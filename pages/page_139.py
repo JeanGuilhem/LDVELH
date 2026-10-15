@@ -1,7 +1,7 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies, ls_death, handle_repas
-from fight import fight, before_fight
+
 
 
 if "weapon_mastery" not in st.session_state:
@@ -46,4 +46,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
-st.session_state.last_page_number = st.session_state.current_page_number
+end_page()

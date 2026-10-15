@@ -1,51 +1,38 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page, is_new_page, lose_backpack, lose_all_weapons
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=258)
 
 fr_text = """
+Grâce à votre Maîtrise Psychique de la Matière, vous parvenez en
+quelques instants à dénouer vos liens. Vous attendez alors le
+moment propice pour vous enfuir et, soudain, vous vous mettez à
+courir à toutes jambes en direction des sous-bois touffus. Des
+flèches noires sifflent à vos oreilles mais, bientôt, vous vous êtes
+enfoncé suffisamment loin dans l'épaisse végétation pour être sûr
+d'avoir échappé à vos poursuivants. Vous avez perdu votre Sac à
+Dos et vos Armes, mais vous êtes indemne. Il ne vous reste plus à
+présent qu'à poursuivre votre chemin parmi les arbres de la
+forêt.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
+    if is_new_page():
+        lose_backpack()
+        lose_all_weapons()
 
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    st.write_stream(stream_text("Rendez-vous au :"))
+    st.page_link("pages/page_50.py", label="50", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +40,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,20 +1,28 @@
+
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
+    is_good = called_cookies()
     if not is_good:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=256)
 
 fr_text = """
+Vous êtes réveillé par des Kraans qui poussent leurs cris sinistres
+dans le ciel bleu du matin. Vous vous frottez les yeux, puis vous
+jetez un regard à travers les feuillages qui forment un dôme au-
+dessus de vous : les répugnantes créatures volent en direction du
+nord. Vous êtes sûr que les Kraans ne vous ont pas vu, mais vous
+estimez préférable cependant, par simple prudence, de repartir
+sans délai. Vous remontez donc sur votre cheval et vous galopez
+sur la grand-route en direction du sud.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +31,12 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_224.py", label="224", icon="📄")
 
 
 with tab2:
@@ -53,3 +45,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

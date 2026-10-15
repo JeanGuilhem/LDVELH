@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -15,7 +15,10 @@ check_inventory(is_fighting=False,
                 current_page_number=156)
 
 fr_text = """
-Des flèches noires se fichent dans la boue tout autour de vous. D'autres Gloks ont fait leur apparition sur la berge escarpée de la rivière et vous tirent dessus. De ce côté du cours d'eau, il n'y a pas d'arbres pour vous mettre à l'abri.
+Des flèches noires se fichent dans la boue tout autour de vous.
+D'autres Gloks ont fait leur apparition sur la berge escarpée de la
+rivière et vous tirent dessus. De ce côté du cours d'eau, il n'y a
+pas d'arbres pour vous mettre à l'abri.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -45,4 +48,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
-st.session_state.last_page_number = st.session_state.current_page_number
+end_page()

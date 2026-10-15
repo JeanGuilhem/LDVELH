@@ -1,51 +1,47 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import (
+    display_inventory,
+    check_inventory,
+    end_page,
+    is_new_page,
+    lose_all_weapons,
+    lose_backpack,
+)
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=181)
 
 fr_text = """
+Instinctivement, vous plongez en avant pour éviter le carreau de
+l'arbalète. Le brigand tire et vous sentez la manche de votre
+tunique se déchirer tandis que le projectile vous écorche le bras
+gauche. Vous remerciez les Dieux de vous avoir protégé et vous
+prenez vos jambes à votre cou. Les autres bandits n'ont pas
+d'arbalètes ni d'arcs et ils ont tôt fait d'abandonner la poursuite.
+Quelques instants plus tard, ils sont loin derrière vous et vous
+êtes sauf. Vous avez perdu votre Équipement, mais pas la vie.
+Vous faites une brève halte pour panser l'écorchure causée par le
+carreau d'arbalète puis vous vous remettez en route en direction
+de la capitale.
 """
+
+# l'Équipement (armes et Sac à Dos) est perdu ; l'or et les Objets Spéciaux sont conservés
+if is_new_page():
+    lose_backpack()
+    lose_all_weapons()
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    st.write_stream(stream_text("Rendez-vous au :"))
+    st.page_link("pages/page_288.py", label="288", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

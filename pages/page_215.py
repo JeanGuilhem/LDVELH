@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +12,12 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=215)
 
 fr_text = """
+Vous arrivez dans une petite clairière au centre de laquelle
+reposent les os blanchis d'un énorme animal. Un sentier étroit
+part de la clairière en direction du sud.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +26,19 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Si vous souhaitez examiner le squelette de l'animal, rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
+        st.page_link("pages/page_346.py", label="346", icon="📄")
 
     st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
+        stream_text(f"""Si vous préférez poursuivre votre chemin vers le sud, rendez-vous au:""")
     )
     fi_1 = True
     if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_14.py", label="14", icon="📄")
 
 
 with tab2:
@@ -53,3 +47,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

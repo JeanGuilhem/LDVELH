@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +12,24 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=332)
 
 fr_text = """
+Vous marchez pendant presque dix minutes le long d'un couloir
+sombre et sinueux puis vous grimpez les marches d'un escalier
+raide qui mène à une petite porte de bois. L'homme actionne
+alors un loquet dissimulé aux regards et la porte s'ouvre. Vous
+entrez peu après dans une grande pièce richement décorée : c'est
+une chambre à coucher dont l'un des coins est occupé par une
+immense baignoire de marbre. L'homme vous suggère de vous
+rafraîchir pendant qu'il demande audience au Roi.
+Vous prenez un bain rapide et vous revêtez une toge blanche
+laissée là à votre intention sur une table de marbre. Quelques
+minutes plus tard, l'homme revient et vous conduit le long d'un
+couloir aux murs recouverts de luxueuses tapisseries. Vous
+arrivez enfin devant une haute porte gardée par deux soldats
+vêtus d'armures en argent. Dans quelques instants, vous serez
+devant le Roi.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +38,12 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_350.py", label="350", icon="📄")
 
 
 with tab2:
@@ -53,3 +52,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

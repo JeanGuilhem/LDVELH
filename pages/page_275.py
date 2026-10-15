@@ -1,51 +1,46 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=275)
 
 fr_text = """
+Vous avez suivi ce sentier sinueux pendant environ dix minutes
+lorsque vous entendez soudain des battements d'ailes au-dessus
+de vous. Vous levez les yeux et vous apercevez alors un immense
+Kraan qui s'approche de l'endroit où vous êtes. La créature vient
+du nord et, bientôt, ses grandes ailes noires projettent une ombre
+gigantesque sur le feuillage des arbres. Deux êtres armés de
+longues lances chevauchent le monstre : ce sont des Gloks, de
+petites créatures d'une grande laideur, animées de haine et
+vouées à la malfaisance. Autrefois, il y a de cela plusieurs siècles,
+les Gloks servaient d'esclaves aux Maîtres des Ténèbres, et ceux-ci leur firent bâtir la cité infernale d'Helgedad, située dans les
+déserts volcaniques qui s'étendent au-delà des monts Durncrag.
+La construction de cette ville représenta une longue et
+douloureuse épreuve pour ces créatures, dont seules les plus
+fortes survécurent aux vapeurs empoisonnées qui se dégageaient
+des terrains alentour. Les deux monstres portés par le Kraan sont
+des descendants de ces anciens esclaves. Lorsque le Kraan passe
+au-dessus de votre tête, vous vous cachez sous un arbre, le cœur
+battant, en priant le ciel que le redoutable trio ne vous ait pas
+repéré.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    number = hazard_roll()
+    if number is not None and number <= 4:
+        st.page_link("pages/page_345.py", label="345", icon="📄")
+    elif number is not None:
+        st.page_link("pages/page_74.py", label="74", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +48,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

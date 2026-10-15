@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +12,21 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=284)
 
 fr_text = """
+Votre traversée du Cimetière n'ira pas sans difficultés, car le sol
+en est inégal et recouvert de broussailles épineuses qui déchirent
+votre cape et vous écorchent les jambes. L'air est lourd et
+immobile, des vapeurs pestilentielles s'exhalent des cryptes
+entrouvertes et un murmure lancinant parvient faiblement
+jusqu'à vous, une sorte de chuchotement ininterrompu, venu de
+nulle part et de partout à la fois. Vous vous approchez avec
+précaution d'un espace ouvert entre deux anciennes colonnes et
+vous écartez les broussailles en ayant pris soin d'envelopper vos
+mains dans un pan de votre cape. Or, soudain, le sol se dérobe
+sous vos pas et vous tombez en quelque mystérieuse profondeur
+dans un éboulement de terre et de cailloux.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +35,12 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_71.py", label="71", icon="📄")
 
 
 with tab2:
@@ -53,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,5 +1,6 @@
+
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +13,10 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=280)
 
 fr_text = """
+Alors que vous commencez votre ascension, vous entendez des battements d'ailes qui s'approchent de vous en provenance de l'ouest. Ce sont des Kraans ! D'après le bruit qu'ils font, vous estimez leur nombre à dix au moins, peut-être davantage. Vous maudissez alors votre malchance, car le flanc de la colline n'offre aucun abri, et, si on vous attaque au cours de cette escalade difficile, vous ne pourrez pratiquement pas vous défendre: il est en effet impossible de rester debout sur cette pente escarpée.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +25,19 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Si choisissez dégainer rester complètement immobile en espérant que les Kraans ne vous verront pas, rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
+        st.page_link("pages/page_327.py", label="327", icon="📄")
 
     st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
+        stream_text(f"""Si vous préférez vous hâter de redescendre la colline pour vous mettre à l'abri dans le tunnel, rendez-vous au:""")
     )
     fi_1 = True
     if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_170.py", label="170", icon="📄")
 
 
 with tab2:
@@ -53,3 +46,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

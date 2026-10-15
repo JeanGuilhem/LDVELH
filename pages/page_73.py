@@ -1,6 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies, fight, before_fight
+from inventory import display_inventory, check_inventory, end_page, has_kai
+from utils import stream_text, set_cookies, called_cookies
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
@@ -47,3 +47,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,34 +1,115 @@
-ACTIVE_ITEMS = {
-    "POTION DE GUÉRISON": "Potion curative très puissante. Vous regagnez 4 points d'ENDURANCE si jamais vous décidez de la boire.",
-    "LAUMSPUR":"Herbe rare très recherchée pour ses vertus curatives. Vous regagnez 3 points d'ENDURANCE en l'ingérant.",
-    "'Essence d'Alether": "Puissante potion qui a la propriété d'accroître votre force. En boire le contenu augmentera alors votre total d'HABILETÉ de 2 points pendant toute la durée d'un affrontement."}
-SPECIAL_ITEMS = {
-    "CASQUE": """Il ajoute 2 points
-d'ENDURANCE à votre total.Vous en êtes coiffé.""",
-    "COTTE DE MAILLES": """Elle ajoute 4
-points d'ENDURANCE à votre total. Vous en êtes vêtu""",
-    "Carte Géographique": "Une carte des Fins de Terre, Alliance des Royaumes Libres de Magnamund.",
-    "Pierre Précieuse": "La Pierre dégage une intense chaleur, à ne pas manipuler à mains nues.",
-    "CLE D'ARGENT": "Une petite clé faite en argent.",
-    "Clé d'Or": "Clé obtenu du Serpent de Pierre"
+import os
+
+# Limites de l'inventaire (cf. règles "Combien d'objets pouvez-vous transporter")
+MAX_WEAPONS = 2
+MAX_BACKPACK = 8
+MAX_PURSE = 50
+
+# Catalogue des objets du Tome 1. Les clés sont les noms canoniques : les pages peuvent écrire
+# "Repas", "REPAS" ou "repas", inventory.canonical_name() retrouve toujours la bonne entrée.
+#   type            : "weapon" (2 max), "backpack" (Sac à Dos, 8 max) ou "special" (Objets Spéciaux)
+#   mastery         : arme de référence pour la Maîtrise des armes (ex: LANCE DE GLOK -> LANCE)
+#   heal            : ENDURANCE rendue quand l'objet est utilisé (consommé)
+#   combat_hability : bonus d'HABILETÉ pour la durée d'un combat (consommé)
+#   endurance_bonus : bonus au total d'ENDURANCE tant que l'objet est porté
+ITEMS = {
+    # --- Armes ---
+    "POIGNARD": {"type": "weapon", "mastery": "POIGNARD", "description": "Arme."},
+    "LANCE": {"type": "weapon", "mastery": "LANCE", "description": "Arme."},
+    "MASSE D'ARMES": {"type": "weapon", "mastery": "MASSE D'ARMES", "description": "Arme."},
+    "SABRE": {"type": "weapon", "mastery": "SABRE", "description": "Arme."},
+    "MARTEAU DE GUERRE": {"type": "weapon", "mastery": "MARTEAU DE GUERRE", "description": "Arme."},
+    "ÉPÉE": {"type": "weapon", "mastery": "ÉPÉE", "description": "Arme."},
+    "HACHE": {"type": "weapon", "mastery": "HACHE", "description": "Arme."},
+    "BÂTON": {"type": "weapon", "mastery": "BÂTON", "description": "Arme."},
+    "GLAIVE": {"type": "weapon", "mastery": "GLAIVE", "description": "Arme."},
+    "LANCE DE GLOK": {"type": "weapon", "mastery": "LANCE", "description": "Une lance de Glok."},
+    "ÉPÉE DU PRINCE": {"type": "weapon", "mastery": "ÉPÉE", "description": "L'épée du Prince Pellagayo."},
+    # --- Sac à Dos ---
+    "REPAS": {
+        "type": "backpack",
+        "description": "S'il ne vous reste plus de vivres lorsque vous devez prendre un Repas, "
+        "vous perdez 3 points d'ENDURANCE. Chaque Repas compte pour un objet.",
+    },
+    "POTION DE GUÉRISON": {
+        "type": "backpack",
+        "heal": 4,
+        "description": "Vous rend 4 points d'ENDURANCE. Une seule dose.",
+    },
+    "LAUMSPUR": {
+        "type": "backpack",
+        "heal": 3,
+        "description": "Herbe rare aux vertus curatives. Chaque dose vous rend 3 points d'ENDURANCE.",
+    },
+    "TORCHE": {"type": "backpack", "description": "Un fagot de branches enduit de poix."},
+    "BRIQUET À AMADOU": {"type": "backpack", "description": "Pour allumer un feu ou une torche."},
+    "SAVON PARFUMÉ": {"type": "backpack", "description": "Un morceau de savon parfumé."},
+    "MESSAGE": {"type": "backpack", "description": "Un message écrit sur une peau d'animal."},
+    "PIERRE PRÉCIEUSE": {
+        "type": "backpack",
+        "description": "Une Pierre de cette taille doit valoir une bonne centaine de Couronnes.",
+    },
+    # --- Objets Spéciaux ---
+    "CARTE GÉOGRAPHIQUE": {
+        "type": "special",
+        "description": "Une carte des Fins de Terre, rangée dans une poche intérieure de votre tunique.",
+    },
+    "CASQUE": {
+        "type": "special",
+        "endurance_bonus": 2,
+        "description": "Il ajoute 2 points d'ENDURANCE à votre total. Vous en êtes coiffé.",
+    },
+    "COTTE DE MAILLES": {
+        "type": "special",
+        "endurance_bonus": 4,
+        "description": "Elle ajoute 4 points d'ENDURANCE à votre total. Vous en êtes vêtu.",
+    },
+    "CLÉ D'ARGENT": {"type": "special", "description": "Une petite clé faite en argent."},
+    "CLÉ D'OR": {"type": "special", "description": "Clé obtenue du Serpent de Pierre."},
+    "PARCHEMIN": {"type": "special", "description": "Un rouleau de parchemin trouvé sur un Glok."},
+    "PENDENTIF À L'ÉTOILE DE CRISTAL": {
+        "type": "special",
+        "description": "Symbole de la Confrérie de l'Étoile de Cristal, offert par Banedon.",
+    },
+    "PIERRES PRÉCIEUSES": {
+        "type": "special",
+        "description": "Vingt Pierres Précieuses, rangées dans votre bourse.",
+    },
+    "ESSENCE D'ALETHER": {
+        "type": "special",
+        "combat_hability": 2,
+        "description": "Augmente votre HABILETÉ de 2 points pendant toute la durée d'un affrontement. Une seule dose.",
+    },
 }
-RANDOM_ITEMS = {
-    "Repas": """Tout au long de votre quête, vous aurez besoin de vous nourrir à
-intervalles réguliers. S'il ne vous reste plus de vivres lorsque vous
-serez dans l'obligation de prendre un repas, vous perdrez 3
-points d'ENDURANCE. Chaque Repas compte pour un objet"""
-}
-WEAPON = [
+
+# Table de Hasard (0 à 9) -> arme maîtrisée (cf. "La Maîtrise des armes")
+WEAPON_MASTERY_TABLE = [
+    "POIGNARD",
+    "LANCE",
+    "MASSE D'ARMES",
+    "SABRE",
+    "MARTEAU DE GUERRE",
     "ÉPÉE",
     "HACHE",
-    "MARTEAU DE GUERRE",
-    "SABRE",
-    "MASSE D'ARMES",
-    "LANCE",
-    "POIGNARD",
-    "BATON",
+    "ÉPÉE",
+    "BÂTON",
     "GLAIVE",
 ]
+
+# Table de Hasard (0 à 9) -> objet trouvé dans les ruines du monastère (cf. "Équipement")
+STARTING_ITEM_TABLE = {
+    1: "ÉPÉE",
+    2: "CASQUE",
+    3: "REPAS",  # deux Repas
+    4: "COTTE DE MAILLES",
+    5: "MASSE D'ARMES",
+    6: "POTION DE GUÉRISON",
+    7: "BÂTON",
+    8: "LANCE",
+    9: 12,  # douze Couronnes
+    0: "GLAIVE",
+}
+
 KAI = {
     "Le Camouflage": """
 Cette technique permet au Seigneur Kaï de se fondre dans le
@@ -111,11 +192,7 @@ créatures: il se peut que certaines d'entre elles y soient
 insensibles. Si le cas se présente, vous en serez averti au cours de
 votre mission.""",
     "Communication Animale": """Grâce à cette technique, un Seigneur Kaï peut communiquer avec
-certains animaux et deviner les intentions de certains autres.
-Maîtrise Psychique de la Matière
-C'est une technique qui donne à un Seigneur Kaï la faculté de
-déplacer de petits objets par le simple pouvoir de sa
-concentration mentale.""",
+certains animaux et deviner les intentions de certains autres.""",
     "Maîtrise Psychique de la Matière": """C'est une technique qui donne à un Seigneur Kaï la faculté de
 déplacer de petits objets par le simple pouvoir de sa
 concentration mentale. Si vous choisissez cette discipline,
@@ -151,101 +228,103 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
     if st.session_state.last_page_number != st.session_state.current_page_number:
         # Action ici
 
-6.  Gain/Perte d'ENDURANCE: Appliquer directement sur st.session_state.endurance et afficher avec st.metric(label="Endurance", value=..., delta=... ).
+6.  Gain/Perte d'ENDURANCE: utiliser change_endurance(delta) (importé de inventory), qui gère le plafond et la mort,
+    et afficher avec st.metric(label="Endurance", value=..., delta=... ).
 
     Exemple (pour une perte de 2 ENDURANCE):
     if st.session_state.last_page_number != st.session_state.current_page_number:
-        st.session_state.endurance -= 2
-        st.metric(label="Endurance", value=st.session_state.endurance, delta=-2)
+        change_endurance(-2)
+    st.metric(label="Endurance", value=st.session_state.endurance, delta=-2)
 
 
-7.  Gain d'Or: Appliquer sur st.session_state.purse et afficher avec st.metric(label="Couronnes", value=..., delta=+[montant]).
+7.  Or (Couronnes), importés de inventory :
+    * Or imposé par le texte (récompense, vol...) : add_gold(montant) dans la condition anti-rerun.
+    * Or que le joueur « peut prendre » : pickup_gold(montant, key="gold").
+    * Paiement : spend_gold(montant) renvoie False si la bourse ne suffit pas. Un choix qui demande de payer
+      se fait avec un st.button : if st.button("Payer 10 Couronnes", disabled=st.session_state.purse < 10):
+      spend_gold(10) puis st.switch_page("pages/page_XXX.py").
 
-8.  Objets à Ramasser:
-    * Utiliser st.button pour chaque objet.
-    * Le bouton doit être désactivé par st.session_state.visibility_X (où X est 1, 2, 3...)
-    * Si le bouton est cliqué: appeler add_to_inventory(name="NOM_OBJET") et régler st.session_state.visibility_X = True.
+8.  Objets à Ramasser: utiliser pickup_button(name, key, label) (importé de inventory). Il gère tout seul
+    l'anti-rerun, les limites (8 objets dans le Sac à Dos, 2 armes) et le rangement (Armes, Sac à Dos ou Objets Spéciaux).
+    Chaque objet a une key différente ; des boutons qui partagent la même key forment un choix « l'un ou l'autre ».
+    Les noms d'objets sont ceux du livre, en majuscules (REPAS, LAUMSPUR, POIGNARD, CLÉ D'OR, SAC À DOS...).
     Exemple (pour deux doses de LAUMSPUR):
         st.write("Vous pouvez ajouter les doses de Laumspur à votre inventaire :")
-        if st.button(label="Dose de Laumspur", key="laumspur_1", disabled=st.session_state.visibility_1):
-            st.session_state.visibility_1 = True
-            add_to_inventory(name="LAUMSPUR")
-        if st.button(label="Dose de Laumspur", key="laumspur_2", disabled=st.session_state.visibility_2):
-            st.session_state.visibility_2 = True
-            add_to_inventory(name="LAUMSPUR")
+        pickup_button("LAUMSPUR", key="laumspur_1", label="Prendre une dose de Laumspur")
+        pickup_button("LAUMSPUR", key="laumspur_2", label="Prendre une dose de Laumspur")
+    Exemple (prendre au choix le Poignard OU une Lance):
+        pickup_button("POIGNARD", key="weapon_choice", label="Prendre le Poignard")
+        pickup_button("LANCE", key="weapon_choice", label="Prendre une Lance")
+
+8bis. Objets imposés ou perdus (importés de inventory), toujours dans la condition anti-rerun :
+    * add_to_inventory("NOM") / remove_from_inventory("NOM") : gagner / perdre un objet précis.
+    * has_item("NOM") : tester la possession d'un objet (ex: "Si vous possédez une Clé d'Or").
+    * lose_all_weapons() : « vous avez perdu vos Armes ».
+    * lose_backpack() : « vous avez perdu votre Sac à Dos » (le sac et son contenu).
+    * empty_backpack() : « tout le contenu de votre Sac à Dos est perdu ».
+    * choose_item_to_lose(candidats, key="lose") : le joueur choisit l'objet perdu (vol, arme brisée).
+      Renvoie True quand c'est réglé ; n'afficher les liens de sortie qu'à ce moment-là.
+      Ex (« on vous vole un objet du Sac à Dos, ou une arme si vous n'avez plus de Sac à Dos ») :
+        candidats = st.session_state.backpack if st.session_state.backpack else st.session_state.weapons
+        if choose_item_to_lose(list(candidats), key="theft"):
+            st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
 
 
 9.  Discipline Kaï (Choix):
     * Utiliser la variable 'fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."' en haut du fichier.
-    * Pour un choix conditionnel Kai (ex: "rendez-vous au 198"):
-        if "NOM DE LA DISCIPLINE" in list(st.session_state.kai.to_dict()["Mastery"].values()):
+    * Pour un choix conditionnel Kai (ex: "rendez-vous au 198"), utiliser has_kai (importé de inventory):
+        if has_kai("NOM DE LA DISCIPLINE"):
             st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
         else:
             st.write_stream(stream_text(fr_unkown_kai))
             st.page_link("pages/page_XXX.py", label="XXX", icon="📄", disabled=True)
 
     Exemple (pour la Discipline Kaï du Sixième Sens vers 198):
-        if "Le Sixième Sens" in list(st.session_state.kai.to_dict()["Mastery"].values()):
+        if has_kai("Le Sixième Sens"):
             st.page_link("pages/page_198.py", label="198", icon="📄")
         else:
             st.write_stream(stream_text(fr_unkown_kai))
             st.page_link("pages/page_198.py", label="198", icon="📄", disabled=True)
 
     
-10. Combat:
-    * Utiliser la séquence (st.subheader, st.metric, before_fight, fight) gérée par des états successifs (ex: st.session_state.done_fighting_glok_1, st.session_state.done_fighting_glok_2).
-    Les combats doivent utiliser les imports 'fight' et 'before_fight' et la variable st.session_state.done_fighting (initialisée à False si elle n'existe pas) pour l'affichage conditionnel.
+10. Combat: utiliser combat() (from combat import combat). Elle affiche l'ennemi, les bonus, les boutons d'assaut
+    et de fuite, met à jour l'ENDURANCE et gère la mort. Elle renvoie None tant que le combat n'est pas fini, puis
+    "win", "fled", "rounds_over" ou "wounded". N'ajoute aucune autre variable d'état (done_fighting...).
 
-    Si la page contient plusieurs combats successifs (ex: Glok 1 puis Glok 2), utilisez des variables d'état spécifiques (done_fighting_ennemy_1, done_fighting_ennemy_2, etc.)
+    def combat(
+        enemies,                      # [("NOM", HABILETÉ, ENDURANCE), ...] combattus l'un après l'autre
+        key="combat",                 # à changer seulement si la page contient deux combats distincts
+        hability_modifier=0,          # bonus/malus d'HABILETÉ imposé par le texte pour tout le combat
+        first_round_modifier=0,       # bonus/malus pour le premier assaut seulement
+        psychic_immune=False,         # "insensible à la Discipline Kaï de la Puissance Psychique"
+        psychic_attack=False,         # l'ennemi utilise sa Puissance Psychique (-2 HABILETÉ sans Bouclier psychique)
+        psychic_attack_from_round=1,  # assaut à partir duquel l'attaque psychique compte
+        flee_after=None,              # None: fuite interdite, 0: à tout moment, N: après N assauts
+        max_rounds=None,              # "si après N assauts il est toujours vivant" -> "rounds_over"
+        stop_when_wounded=False,      # "si vous perdez des points d'ENDURANCE au cours du combat" -> "wounded"
+    )
 
-    Si est spécifié que l'ennemi résiste à la Puissance psychique tel que: "Votre adversaire est insensible à la Discipline Kaï de la Puissance
-    Psychique", tu dois ajouter le parametre ennemy_psychique_sensibility=False dans la méthode before_fight().
-    Cette méthode est définie tel que : def before_fight(ls_hability: int, ennemy_psychique_sensibility: bool = True)
+    Ne compte JAMAIS toi-même dans hability_modifier : la Maîtrise des armes, la Puissance psychique, le malus
+    de -4 sans arme, l'attaque psychique et les objets de combat (Essence d'Alether) sont gérés automatiquement.
+    Un malus qui dépend d'un objet s'écrit avec has_item, ex: hability_modifier=0 if has_item("TORCHE") else -3.
 
-    Et la méthode combat automatique est définie telle que: def fight(
-    ls_hability: int,
-    ls_endurance: int,
-    ennemy_hability: int,
-    ennemy_endurance: int,
-    turn_before_flee: int = 0,
-    add_dammage_ennemy: int = 0,
-    add_dammage_LS: int = 0,
-    ) -> int
-
-    N'ajoute rien qui n'existerait pas dans ces méthodes.
-
-    Exemple (pour un KRAAN, HABILTÉ: 16 ENDURANCE: 24, avec une pénalité d'Habilité de -1):
-
-    # (Nécessite l'import de fight, before_fight)
-    if "done_fighting" not in st.session_state:
-        st.session_state.done_fighting = False
-
-    # Dans le bloc 'with tab1':
-    st.subheader("KRAAN")
-    col1, col2 = st.columns(2)
-    col1.metric(label="Habilité", value=16)
-    col2.metric(label="Endurance", value=24)
-
-    if st.session_state.done_fighting is False:
-        if st.button(f"Commencer à combattre"):
-            # Pénalité d'Habilité de -1 appliquée ici
-            ls_hability = before_fight(ls_hability=st.session_state.hability - 1) 
-            fight(ls_hability=ls_hability,
-                ls_endurance=st.session_state.endurance,
-                ennemy_hability=16,
-                ennemy_endurance=24,
-                turn_before_flee=0,
-                add_dammage_ennemy=0,
-                add_dammage_LS=0,
-                )
-            st.session_state.done_fighting = True
-
-    if st.session_state.done_fighting:
-        # Redirections ou texte post-combat ici
-        st.write_stream(stream_text("Si vous parvenez à tuer votre adversaire, rendez-vous au:"))
-        fi = True
-        if fi:
+    Exemple (KRAAN, HABILETÉ 16, ENDURANCE 24, "réduisez d'un point votre total d'HABILETÉ"):
+        outcome = combat([("KRAAN", 16, 24)], hability_modifier=-1)
+        if outcome == "win":
+            st.write_stream(stream_text("Si vous êtes vainqueur, rendez-vous au :"))
             st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
+
+    Exemple (tuer en 4 assauts ou moins -> 94, sinon -> 203, fuite après 2 assauts -> 7):
+        outcome = combat([("VOLEUR", 13, 20)], max_rounds=4, flee_after=2)
+        if outcome == "win":
+            st.page_link("pages/page_94.py", label="94", icon="📄")
+        elif outcome == "rounds_over":
+            st.page_link("pages/page_203.py", label="203", icon="📄")
+        elif outcome == "fled":
+            st.page_link("pages/page_7.py", label="7", icon="📄")
+
+    Exemple (deux Gloks à tour de rôle):
+        outcome = combat([("Premier GLOK", 13, 10), ("Deuxième GLOK", 12, 10)])
 
 
 10bis. Si le joueur doit consommer un repas, tu as juste à ajouter un appel à la fonction handle_repas() du fichier utils.py.
@@ -263,12 +342,21 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
 
 11. Mort: Si la phrase 'Votre mission s'achève ici' apparaît, appeler ls_death() après l'affichage du message.
 
-12. Fin de Page: Le code doit OBLIGATOIREMENT se terminer par :
-    st.session_state.last_page_number = st.session_state.current_page_number
+12. Fin de Page: Le code doit OBLIGATOIREMENT se terminer par (hors de tout bloc, sans indentation) :
+    end_page()
 
 13. Tu ne retourneras que le contenu de la page, sans rien d'autres ni aucun commentaire de ta part. Ton retour sera copié collé directement dans une fichier python.
 
+14. Table de Hasard: utiliser hazard_roll() (from utils import hazard_roll). Le bouton ne tire qu'une fois par visite
+    et renvoie le chiffre du livre, de 0 à 9 (None tant que le joueur n'a pas tiré). Si la page a deux tirages
+    distincts, leur donner des key différentes : hazard_roll(key="premier").
+    Ex: "Utilisez la Table de Hasard. Si vous tirez entre 0 et 4, rendez-vous au 181. Entre 5 et 9, rendez-vous au 145."
+
+    number = hazard_roll()
+    if number is not None and number <= 4:
+        st.page_link("pages/page_181.py", label="181", icon="📄")
+    elif number is not None:
+        st.page_link("pages/page_145.py", label="145", icon="📄")
 
 """
-
-GEMINI_API_KEY= "***REMOVED***"
+GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")

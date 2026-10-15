@@ -1,6 +1,7 @@
+
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai
+from utils import stream_text, set_cookies, called_cookies, ls_death, handle_repas, table_des_hasards
 
 
 
@@ -11,40 +12,29 @@ if "weapon_mastery" not in st.session_state:
     if not is_good:
         st.stop()
 
+st.session_state.current_page_number = 185
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=st.session_state.current_page_number)
 
 fr_text = """
+Vous plissez les yeux et vous scrutez le feuillage des arbres pour
+voir s'il ne s'y cache pas un archer. Votre attente ne dure guère
+car, quelques instants plus tard, une douleur fulgurante vous
+déchire la poitrine et vous êtes projeté en arrière sous le choc de
+trois flèches qui vous transpercent le corps. Deux de ces flèches
+se sont enfoncées profondément dans votre thorax et la troisième
+s'est plantée dans votre cuisse. Avant de sombrer dans les
+ténèbres, vous contemplez dans une ultime vision le feuillage des
+arbres qui forme un dôme au-dessus de vous et une libellule qui
+vient se poser sur la boucle de votre ceinture. Votre mission
+s'achève ici.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+    ls_death()
 
 
 with tab2:
@@ -53,3 +43,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

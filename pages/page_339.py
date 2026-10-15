@@ -1,51 +1,42 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from combat import combat
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=339)
 
 fr_text = """
+Vous faites aussitôt un pas de côté, au moment où un Poignard
+vient fracasser la vitre du comptoir. Un jeune homme vous
+attaque et il vous faut le combattre.
+
+Vous avez le droit de prendre la fuite à tout moment en quittant
+la boutique pour rejoindre la grand-rue.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+
+    outcome = combat([("VOLEUR", 13, 20)], max_rounds=4, flee_after=0)
+
+    if outcome == "win":
+        st.write_stream(stream_text("Vous l'avez tué en quatre assauts ou moins, rendez-vous au :"))
+        st.page_link("pages/page_94.py", label="94", icon="📄")
+    elif outcome == "rounds_over":
+        st.write_stream(stream_text("Au bout de quatre assauts, il est toujours vivant, rendez-vous au :"))
+        st.page_link("pages/page_203.py", label="203", icon="📄")
+    elif outcome == "fled":
+        st.write_stream(
+            stream_text("Vous quittez la boutique pour rejoindre la grand-rue, rendez-vous au :")
         )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+        st.page_link("pages/page_7.py", label="7", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +44,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

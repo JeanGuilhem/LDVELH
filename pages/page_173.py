@@ -1,51 +1,38 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page, has_item
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=173)
 
 fr_text = """
+Lorsque vous atteignez la porte, un énorme bloc de pierre
+tombant du plafond s'écrase au sol, juste derrière vous. Vous
+faites volte-face et vous constatez que la sortie est à présent
+entièrement obstruée.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
+    has_key = has_item("CLÉ D'ARGENT")
 
     st.write_stream(
         stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
+            "Si vous possédez une Clé d'Argent, vous pouvez vous en servir pour essayer "
+            "d'ouvrir la porte. Rendez-vous pour cela au :"
         )
     )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+    st.page_link("pages/page_158.py", label="158", icon="📄", disabled=not has_key)
 
+    st.write_stream(stream_text("Si vous n'avez pas cette Clé, rendez-vous au :"))
+    st.page_link("pages/page_259.py", label="259", icon="📄", disabled=has_key)
 
 with tab2:
     display_inventory()
@@ -53,3 +40,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

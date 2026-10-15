@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai, is_new_page, change_endurance
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -29,9 +29,10 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
 
-    st.session_state.endurance -= 2
+    if is_new_page():
+        change_endurance(-2)
+        add_to_inventory(name="PIERRE PRÉCIEUSE")
     st.metric(label="Endurance", value=st.session_state.endurance, delta=-2)
-    add_to_inventory(name="Pierre Précieuse")
 
     st.write_stream(
         stream_text(
@@ -49,3 +50,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +12,14 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=183)
 
 fr_text = """
+L'officier ordonne à ses hommes de s'arrêter et vous demande ce
+que vous voulez. Vous lui expliquez qui vous êtes et vous lui
+faites le récit de la destruction du Monastère. Consterné par la
+nouvelle qu'il vient d'apprendre, il vous donne un cheval et vous
+demande de le suivre auprès du Prince Pellagayo, le fils du Roi.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +28,19 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Si vous acceptez sa proposition, rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
+        st.page_link("pages/page_97.py", label="97", icon="📄")
 
     st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
+        stream_text(f"""Si vous refusez, rendez-vous au:""")
     )
     fi_1 = True
     if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_200.py", label="200", icon="📄")
 
 
 with tab2:
@@ -53,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

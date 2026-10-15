@@ -11,9 +11,8 @@ Pages:
 Maybe with a checkbox with all activable temporary items before clicking on the button fight.
 WHen button is clicked, when calculating LS habiltiy for the next fight, check all actived items,
 erase them from backpack and add temorary boost. 
+Use a form with a final button start the fight ?
 
 
-Generating pages:
-
-Missing 149
-Start with 160 next time
+-> check if after a fight, st.session_state.ls_endurance is correctly updated.
+-> Make sure execute_fight_items() is correctly deleting items after using it.

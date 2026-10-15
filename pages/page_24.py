@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -51,3 +51,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

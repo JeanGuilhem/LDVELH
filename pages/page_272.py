@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,10 +12,23 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=272)
 
 fr_text = """
+Vous vous hâtez le long du chemin tout en surveillant le ciel au-
+dessus de vous. Vous savez que ce sentier mène au Bois des
+Brumes ; c'est là que s'est installée, depuis presque cinquante
+ans, une famille qui fait le commerce du charbon de bois. Les
+membres de la famille vivent dans des huttes bâties en cercle au
+milieu d'une clairière. Vingt minutes plus tard, vous parvenez à
+la lisière de cette clairière. Les huttes, contrairement à l'habitude,
+paraissent étrangement calmes, et on ne voit plus trace de la
+fumée qui envahit ordinairement les environs. C'est cette fumée
+qui a donné à l'endroit son nom de Bois des Brumes, et son
+absence vous semble tout à fait insolite.
 """
+
+fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
@@ -23,28 +36,23 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Si vous maîtrisez la Discipline Kaï de l'Orientation, rendez-vous au:"""
+        )
+    )
+    if has_kai("L'Orientation"):
+        st.page_link("pages/page_134.py", label="134", icon="📄")
+    else:
+        st.write_stream(stream_text(fr_unkown_kai))
+        st.page_link("pages/page_134.py", label="134", icon="📄", disabled=True)
+
+    st.write_stream(
+        stream_text(
+            f"""Dans le cas contraire, vous dégainez votre arme et vous vous approchez silencieusement des huttes. Rendez-vous alors au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_305.py", label="305", icon="📄")
 
 
 with tab2:
@@ -53,3 +61,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

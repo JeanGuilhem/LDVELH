@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -33,7 +33,7 @@ Discipline Kaï de la Communication animale, rendez-vous au"""
     )
     fi = True
     if fi:
-        if "Communication Animale" not in list(st.session_state.kai.to_dict()["Mastery"].values()):
+        if not has_kai("Communication Animale"):
             st.write_stream(stream_text(fr_unkown_kai))
             st.page_link("pages/page_225.py", label="225", icon="📄", disabled=True)
         else:
@@ -54,3 +54,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

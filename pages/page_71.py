@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -52,7 +52,7 @@ suivre le tunnel, rendez-vous au""")
             f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
         )
     )
-    if "Le Sixième Sens" in list(st.session_state.kai.to_dict()["Mastery"].values()):
+    if has_kai("Le Sixième Sens"):
         st.page_link("pages/page_65.py", label="65", icon="📄")
     else:
         st.write_stream(
@@ -69,3 +69,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

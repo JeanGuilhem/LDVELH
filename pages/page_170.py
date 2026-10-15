@@ -1,51 +1,47 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from combat import combat
+from inventory import display_inventory, check_inventory, end_page, has_item
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=170)
 
 fr_text = """
+Le tunnel est sombre et il y fait beaucoup plus froid qu'au-dehors.
+Vous avancez prudemment en tâtonnant la paroi et au
+bout de trois minutes passées dans une obscurité totale, vous
+sentez soudain une odeur répugnante de viande pourrie. Si vous
+disposez d'une Torche et d'un Briquet d'Amadou, vous pourrez
+vous en servir pour vous éclairer. Soudain, une lourde masse
+tombe du plafond du tunnel et atterrit sur votre dos. Sous le
+choc, vos jambes fléchissent et vous vous retrouvez à genoux.
+C'est un Gluâtre des Profondeurs qui vient de vous attaquer en
+essayant de vous étrangler de ses longs tentacules visqueux.
+
+Si vous n'avez pas de Torche pour vous éclairer, vous devrez
+réduire de 3 points votre total d'HABILETÉ pendant toute la
+durée du combat. Le Gluâtre est insensible aux Disciplines Kaï de
+la Puissance Psychique et de la Communication Animale.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
+    outcome = combat(
+        [("GLUÂTRE DES PROFONDEURS", 17, 7)],
+        hability_modifier=0 if has_item("TORCHE") else -3,
+        psychic_immune=True,
     )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
 
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    if outcome == "win":
+        st.write_stream(stream_text("Vous êtes vainqueur, rendez-vous au :"))
+        st.page_link("pages/page_319.py", label="319", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

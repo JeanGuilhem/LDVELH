@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, has_item
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -38,6 +38,8 @@ with tab1:
 rendez-vous au"""
         )
     )
+    st.page_link("pages/page_337.py", label="337", icon="📄")
+
     st.write_stream(
             stream_text(
                     f"""Si vous possédez la Discipline Kaï de la
@@ -46,7 +48,7 @@ Maîtrise Psychique de la Matière, rendez-vous au"""
     )
     fi_2 = True
     if fi_2:
-        if "Maîtrise Psychique de la Matière" in list(st.session_state.kai.to_dict()["Mastery"].values()):
+        if has_kai("Maîtrise Psychique de la Matière"):
             st.page_link("pages/page_151.py", label="151", icon="📄")
         else:
             st.write_stream(
@@ -60,7 +62,7 @@ Maîtrise Psychique de la Matière, rendez-vous au"""
         stream_text(f"""Enfin, si
 vous avez une Clé d'Or, rendez-vous au""")
     )
-    if "Clé d'Or" in list(st.session_state.backpack['Nom'].values()):
+    if has_item("Clé d'Or"):
         fi = True
         if fi:
             st.page_link("pages/page_326.py", label="326", icon="📄")
@@ -78,3 +80,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

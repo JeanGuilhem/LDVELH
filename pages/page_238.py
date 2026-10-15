@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -12,9 +12,14 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=238)
 
 fr_text = """
+Le sentier contourne plusieurs tertres et collines aux flancs
+boisés, puis aboutit enfin à une petite cabane en rondins
+incendiée. Il semble qu'elle ait brûlé tout récemment car les
+cendres sont encore chaudes, et il s'en élève un filet de fumée. Il
+se peut que cet endroit soit dangereux.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +28,19 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Si vous souhaitez repartir par le sentier orienté au sud, rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
+        st.page_link("pages/page_42.py", label="42", icon="📄")
 
     st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
+        stream_text(f"""Si vous préférez emprunter le chemin qui mène vers le nord, rendez-vous au:""")
     )
     fi_1 = True
     if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_68.py", label="68", icon="📄")
 
 
 with tab2:
@@ -53,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

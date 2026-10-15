@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, has_item
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -36,7 +36,7 @@ with tab1:
 Vordak, rendez-vous au"""
         )
     )
-    if "Pierre de Vordak" in list(st.session_state.backpack['Nom'].values()):
+    if has_item("Pierre de Vordak"):
         fi = True
         if fi:
             st.page_link("pages/page_236.py", label="236", icon="📄")
@@ -60,3 +60,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -20,12 +20,12 @@ scintillantes de Holmgard dont les étendards flottent au vent
 frais du matin. S'étirant vers l'ouest, le fleuve Eledil jaillit des
 monts Durncrag et se jette dans le golfe de Holm. Or, soudain,
 vous distinguez au pied des montagnes une immense armée aux
-uniformes noirs qui s'avance inexorablement vers la capitale. A
+uniformes noirs qui s'avance inexorablement vers la capitale. À
 votre droite, la grand-route mène à Holmgard à travers les
 plaines. En vous lançant au galop, vous pourriez atteindre en
 moins d'une heure le camp fortifié qui entoure la ville, mais vous
 seriez la plupart du temps à découvert, offrant aux Kraans une
-proie facile. A quelque distance devant vous, cependant, une
+proie facile. À quelque distance devant vous, cependant, une
 large rivière aux eaux boueuses coule paresseusement en
 direction du fleuve Eledil dans lequel elle finit par se jeter. Vous
 pourriez abandonner votre cheval et profiter de l'escarpement de
@@ -75,4 +75,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
-st.session_state.last_page_number = st.session_state.current_page_number
+end_page()

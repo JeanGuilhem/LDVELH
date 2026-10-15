@@ -1,6 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
-from utils import stream_text, set_cookies, called_cookies, change_visiblity
+from inventory import display_inventory, check_inventory, end_page, pickup_button
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
@@ -29,15 +29,11 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    
+
     st.write("Vous pouvez ajouter les doses de Laumspur à votre inventaire :")
 
-    if st.button(label="Dose de Laumspur", key="laumspur_1", disabled=st.session_state.visibility_1):
-        st.session_state.visibility_1 = True # to hide next time the checkbox
-        add_to_inventory(name="LAUMSPUR")
-    if st.button(label="Dose de Laumspur", key="laumspur_2", disabled=st.session_state.visibility_2):
-        st.session_state.visibility_2 = True
-        add_to_inventory(name="LAUMSPUR")
+    pickup_button("LAUMSPUR", key="laumspur_1", label="Prendre une dose de Laumspur")
+    pickup_button("LAUMSPUR", key="laumspur_2", label="Prendre une dose de Laumspur")
 
     st.write_stream(
         stream_text(
@@ -60,3 +56,5 @@ with tab2:
 
 with tab3:
     st.image("static/map_1.png")
+
+end_page()

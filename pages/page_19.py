@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -28,41 +28,26 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
     st.write_stream(
-        stream_text(
-            f""" Vous pouvez
-éviter les Dents de Sommeil en revenant sur le sentier. Rendezvous alors au"""
-        )
+        stream_text("Vous pouvez éviter les Dents de Sommeil en revenant sur le sentier. Rendez-vous alors au :")
     )
-    fi = True
-    if fi:
-        st.page_link("pages/page_272.py", label="272", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Vous pouvez au contraire essayer de vous
-frayer un chemin parmi ces buissons pour pénétrer plus
-profondément dans la forêt. Rendez-vous dans ce cas au""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_119.py", label="119", icon="📄")
+    st.page_link("pages/page_272.py", label="272", icon="📄")
 
     st.write_stream(
         stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï de l'Orientation, rendezvous au"""
+            "Vous pouvez au contraire essayer de vous frayer un chemin parmi ces buissons pour "
+            "pénétrer plus profondément dans la forêt. Rendez-vous dans ce cas au :"
         )
     )
-    fi_2 = True
-    if fi_2:
-        if "L'Orientation" in list(st.session_state.kai.to_dict()["Mastery"].values()):
-            st.page_link("pages/page_69.py", label="69", icon="📄")
-        else:
-            st.write_stream(
-                stream_text(
-                    fr_unkown_kai
-                )
-            )
-            st.page_link("pages/page_141.py", label="141", icon="📄", disabled=True)
+    st.page_link("pages/page_119.py", label="119", icon="📄")
 
+    st.write_stream(
+        stream_text("Enfin, si vous maîtrisez la Discipline Kaï de l'Orientation, rendez-vous au :")
+    )
+    if has_kai("L'Orientation"):
+        st.page_link("pages/page_69.py", label="69", icon="📄")
+    else:
+        st.write_stream(stream_text(fr_unkown_kai))
+        st.page_link("pages/page_69.py", label="69", icon="📄", disabled=True)
 
 with tab2:
     display_inventory()
@@ -70,3 +55,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

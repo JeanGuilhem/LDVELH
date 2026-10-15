@@ -1,6 +1,13 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, table_des_hasards, set_cookies, called_cookies
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies, hazard_roll
+
+if "weapon_mastery" not in st.session_state:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
+        st.stop()
+
+check_inventory(current_page_number=2)
 
 fr_text = """
 Tandis que vous courez à perdre haleine dans la forêt qui
@@ -10,40 +17,16 @@ soudain en tombant tête la première dans un enchevêtrement de
 branches basses.
 """
 
-if "weapon_mastery" not in st.session_state:
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
-        st.stop()
-
-check_inventory(is_fighting=False,
-                current_page_number=2)
-
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    if st.button(label="Utilisez la Table de Hasard pour obtenir un chiffre."):
-        st.session_state.number = table_des_hasards()
-        st.write_stream(stream_text(f"*Vous avez tiré le {st.session_state.number}"))
-        if st.session_state.number in [1,2,3,4]:
-            st.write_stream(
-                stream_text(
-                    f"""Rendez-vous au"""
-                )
-            )
-            fi = True
-            if fi:
-                st.page_link("pages/page_342.py", label="343", icon="📄")
-        else:
-            st.write_stream(
-                stream_text(f"""Rendez-vous au:""")
-            )
-            fi_1 = True
-            if fi_1:
-                st.page_link("pages/page_276.py", label="276", icon="📄")
 
-
+    number = hazard_roll()
+    if number is not None and number <= 4:
+        st.page_link("pages/page_343.py", label="343", icon="📄")
+    elif number is not None:
+        st.page_link("pages/page_276.py", label="276", icon="📄")
 
 with tab2:
     display_inventory()
@@ -51,3 +34,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

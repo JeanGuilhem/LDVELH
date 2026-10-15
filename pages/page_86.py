@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -48,7 +48,7 @@ judicieux d'aller vers le sud, rendez-vous au"""
     )
     fi_2 = True
     if fi_2:
-        st.page_link("pages/page_165.py", label="165", icon="📄")
+        st.page_link("pages/page_167.py", label="167", icon="📄")
 
     st.write_stream(
             stream_text(
@@ -67,3 +67,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

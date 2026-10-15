@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, spend_gold
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -33,13 +33,11 @@ with tab1:
             f"""Si vous acceptez son offre, rendez-vous au """
         )
     )
-    fi = True
-    if fi:
-        if st.session_state.purse >= 2:
-            st.page_link("pages/page_246.py", label="246", icon="📄")
-        else:
-            st.write_stream(stream_text("*Vous ne possédez pas la somme demandée.*"))
-            st.page_link("pages/page_246.py", label="246", icon="📄", disabled=True)
+    if st.button("Payer 2 Couronnes (246)", disabled=st.session_state.purse < 2):
+        if spend_gold(2):
+            st.switch_page("pages/page_246.py")
+    if st.session_state.purse < 2:
+        st.caption("Vous ne possédez pas la somme demandée.")
 
     st.write_stream(
         stream_text(f"""Si
@@ -57,7 +55,7 @@ au """)
     )
     fi_2 = True
     if fi_2:
-        if "Sixième Sens" not in list(st.session_state.kai.to_dict()["Mastery"].values()):
+        if not has_kai("Sixième Sens"):
             st.write_stream(stream_text(fr_unkown_kai))
             st.page_link("pages/page_296.py", label="296", icon="📄", disabled=True)
         else:
@@ -70,3 +68,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

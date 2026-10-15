@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -26,31 +26,8 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Rendez-vous au"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_140.py", label="140", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    st.write_stream(stream_text("Rendez-vous au :"))
+    st.page_link("pages/page_140.py", label="140", icon="📄")
 
 with tab2:
     display_inventory()
@@ -58,3 +35,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

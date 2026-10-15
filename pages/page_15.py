@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, pickup_button
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -27,21 +27,10 @@ permettent de quitter la clairière
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
-if "first_item" not in st.session_state:
-    st.session_state.first_item = False
-
-
 with tab1:
     st.write(fr_text)
 
-    if not st.session_state.first_item:
-        if st.session_state.weapon1 and st.session_state.weapon2:
-            st.write_stream(stream_text("*Vous ne pouvez porter que 2 armes à la fois."))
-            st.checkbox(label="Prendre l'épée", disabled=True)
-        else:
-            if st.checkbox(label="Prendre l'épée"):
-                add_to_inventory(name="ÉPÉE")
-                st.session_state.first_item = True
+    pickup_button("ÉPÉE", key="sword", label="Prendre l'épée")
 
     st.write_stream(
         stream_text(
@@ -52,7 +41,6 @@ rendez-vous au"""
     fi = True
     if fi:
         st.page_link("pages/page_207.py", label="207", icon="📄")
-        st.session_state.first_item = False
 
     st.write_stream(
         stream_text(f"""A l'ouest, rendez-vous au""")
@@ -60,7 +48,6 @@ rendez-vous au"""
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_201.py", label="201", icon="📄")
-        st.session_state.first_item = False
 
     st.write_stream(
         stream_text(
@@ -71,7 +58,6 @@ rendez-vous au"""
     fi_2 = True
     if fi_2:
         st.page_link("pages/page_35.py", label="35", icon="📄")
-        st.session_state.first_item = False
 
 
 with tab2:
@@ -80,3 +66,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

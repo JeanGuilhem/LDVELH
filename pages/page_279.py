@@ -1,51 +1,35 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=279)
 
 fr_text = """
+Vous grimpez sur l'amas de pierrailles qui s'entasse devant la
+grotte à l'intérieur de laquelle vous vous engouffrez en prenant
+soin d'en boucher l'entrée derrière vous à l'aide d'un gros rocher.
+Quelques minutes plus tard, vous apercevez les Gloks qui
+s'approchent de la grotte, leurs petits yeux jaunes et cruels
+scrutant chaque fissure s'ouvrant au flanc de la colline. Ils sont si
+près de vous que vous vous attendez à être découvert d'une
+minute à l'autre.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    number = hazard_roll()
+    if number is not None and number <= 6:
+        st.page_link("pages/page_112.py", label="112", icon="📄")
+    elif number is not None:
+        st.page_link("pages/page_96.py", label="96", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +37,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

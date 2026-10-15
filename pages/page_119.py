@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -53,7 +53,6 @@ with tab1:
     if fi_1:
         st.page_link("pages/page_38.py", label="38", icon="📄")
     
-    st.session_state.last_page_number =  st.session_state.current_page_number
 
 with tab2:
     display_inventory()
@@ -61,3 +60,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

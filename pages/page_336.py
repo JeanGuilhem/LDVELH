@@ -1,51 +1,34 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from combat import combat
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=336)
 
 fr_text = """
+Vous vous ruez dans la clairière en prenant les Gloks au
+dépourvu. Sans la moindre seconde d'hésitation, vous frappez
+celui qui se trouve le plus proche de vous et vous le tuez avant
+même que son corps se soit écroulé sur le sol. Les autres Gloks
+dégainent leurs épées à la lame recourbée et vous attaquent, il
+vous faut les combattre un par un.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
+    outcome = combat([("Premier GLOK", 14, 11), ("Deuxième GLOK", 13, 11)])
 
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    if outcome == "win":
+        st.write_stream(stream_text("Vous êtes vainqueur, vous libérez le soldat et vous vous rendez au :"))
+        st.page_link("pages/page_117.py", label="117", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +36,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

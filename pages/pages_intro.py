@@ -1,6 +1,17 @@
 import streamlit as st
-from inventory import display_inventory
-from utils import stream_text
+from inventory import display_inventory, init_state
+from save import save_game
+from utils import called_cookies
+
+if "weapon_mastery" not in st.session_state:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
+        st.stop()
+
+init_state()
+st.session_state.game_phase = "playing"
+st.session_state.current_page_number = 0
+st.session_state.last_page_number = 0
 
 fr_text = """
 Au nord du royaume du Sommerlund, il est de tradition depuis
@@ -86,3 +97,5 @@ with tab1:
 
 with tab2:
     display_inventory()
+
+save_game()

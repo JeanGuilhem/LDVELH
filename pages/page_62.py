@@ -1,6 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
-from utils import stream_text, set_cookies, called_cookies, change_visiblity
+from inventory import display_inventory, check_inventory, end_page, is_new_page, add_gold, pickup_button
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
@@ -34,26 +34,19 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
 
-    if st.checkbox(label="Repas", key="1", disabled=st.session_state.visibility_1):
-        st.session_state.visibility_1 = True
-        add_to_inventory(name="Repas")
-    if st.checkbox(label="Repas", key="2", disabled=st.session_state.visibility_2):
-        st.session_state.visibility_2 = True
-        add_to_inventory(name="Repas")
-    if st.checkbox(label="Repas", key="3", disabled=st.session_state.visibility_3):
-        st.session_state.visibility_3 = True
-        add_to_inventory(name="Repas")
-    if st.checkbox(label="Epée", disabled=st.session_state.visibility_4):
-        st.session_state.visibility_4 = True
-        add_to_inventory(name="ÉPÉE")
-    if st.checkbox(label="Récupérer l'or", disabled=st.session_state.visibility_5):
-        st.session_state.visibility_5 = True
-        st.session_state.purse += 28
+    if is_new_page():
+        add_gold(28)
+        st.success("Vous empochez les 28 Pièces d'Or.")
+
+    pickup_button("REPAS", key="meal_1", label="Prendre un Repas")
+    pickup_button("REPAS", key="meal_2", label="Prendre un Repas")
+    pickup_button("REPAS", key="meal_3", label="Prendre un Repas")
+    pickup_button("ÉPÉE", key="sword", label="Prendre une Épée")
+    pickup_button("SAC À DOS", key="backpack", label="Prendre un Sac à Dos (si vous n'en avez plus)")
 
     st.write_stream(
         stream_text(
-            f""". Rendez-vous
-au"""
+            f"""Rendez-vous au :"""
         )
     )
     fi = True
@@ -67,3 +60,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

@@ -1,7 +1,7 @@
 
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
-from utils import stream_text, set_cookies, called_cookies
+from inventory import display_inventory, check_inventory, end_page, pickup_button
+from utils import stream_text, called_cookies
 
 
 if "weapon_mastery" not in st.session_state:
@@ -24,18 +24,13 @@ de vous : l'endroit est désert. En vous approchant de la cheminée,
 vous trouvez un Marteau de Guerre posé contre le mur.
 """
 
-if "visibility_1" not in st.session_state:
-    st.session_state.visibility_1 = False
-
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
 
     st.write_stream(stream_text("Vous pouvez le prendre si vous le désirez."))
-    if st.button(label="Marteau de Guerre", key="marteau_de_guerre", disabled=st.session_state.visibility_1):
-        st.session_state.visibility_1 = True
-        add_to_inventory(name="MARTEAU DE GUERRE")
+    pickup_button("MARTEAU DE GUERRE", key="warhammer", label="Prendre le Marteau de Guerre")
 
     st.write_stream(
         stream_text(
@@ -60,7 +55,7 @@ with tab1:
     )
     fi_2 = True
     if fi_2:
-        st.page_link("pages/page_240.py", label="240", icon="📄")
+        st.page_link("pages/page_199.py", label="199", icon="📄")
 
 
 with tab2:
@@ -69,4 +64,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
-st.session_state.last_page_number = st.session_state.current_page_number
+end_page()

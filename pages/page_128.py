@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai
 from utils import stream_text, set_cookies, called_cookies
 
 fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."
@@ -36,7 +36,7 @@ with tab1:
     )
     
     # LOGIQUE DISCIPLINE KAÏ DE LA CHASSE
-    if "La Chasse" in list(st.session_state.kai.to_dict()["Mastery"].values()):
+    if has_kai("La Chasse"):
         st.page_link("pages/page_297.py", label="297", icon="📄")
     else:
         st.write_stream(
@@ -56,10 +56,11 @@ vie du soldat. Rendez-vous alors au:"""
     if fi_1:
         st.page_link("pages/page_336.py", label="336", icon="📄")
 
-    st.session_state.last_page_number = st.session_state.current_page_number
 
 with tab2:
     display_inventory()
 
 with tab3:
     st.image("static/map_1.png")
+
+end_page()

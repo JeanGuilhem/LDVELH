@@ -1,8 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page, pickup_button, pickup_gold
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
@@ -12,39 +10,41 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=291)
 
 fr_text = """
+Les cadavres recroquevillés des deux Gloks reposent à vos pieds.
+Le Kraan s'est enfui pendant le combat, et le sentier est à présent désert.
+Vous calez votre Sac à Dos sur vos épaules et vous reprenez votre chemin.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
+
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Vous les fouillez rapidement et vous découvrez dans leurs
+vêtements 6 Couronnes, 2 Lances et 1 Poignard. Vous pouvez
+garder l'Or et prendre au choix le Poignard ou l'une des Lances.
+Inscrivez dans ce cas votre nouvelle acquisition sur votre Feuille
+d'Aventure."""
         )
+    )
+
+    pickup_gold(6)
+
+    st.write("Vous pouvez prendre **une seule** de ces armes :")
+    pickup_button("POIGNARD", key="weapon", label="Prendre le Poignard")
+    pickup_button("LANCE", key="weapon", label="Prendre une Lance")
+
+    st.write_stream(
+        stream_text(f"""Rendez-vous au:""")
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_272.py", label="272", icon="📄")
 
 
 with tab2:
@@ -53,3 +53,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

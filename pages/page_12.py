@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, spend_gold
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -26,29 +26,18 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
     st.write_stream(
-        stream_text(
-            f"""Si vous
-avez ces 10 Couronnes et que vous désirez les lui donner, rendez-
-vous au"""
-        )
+        stream_text("Si vous avez ces 10 Couronnes et que vous désirez les lui donner, rendez-vous au :")
     )
-    if st.session_state.purse >= 10:
-        fi = True
-        if fi:
-            st.page_link("pages/page_262.py", label="262", icon="📄")
-    else:
-        st.write(stream_text("Vous ne possedez pas la somme requise."))
-        fi = True
-        if fi:
-            st.page_link("pages/page_85.py", label="85", icon="📄",disabled=True)
+    if st.button("Payer 10 Couronnes (262)", disabled=st.session_state.purse < 10):
+        if spend_gold(10):
+            st.switch_page("pages/page_262.py")
+    if st.session_state.purse < 10:
+        st.caption("Vous ne possédez pas la somme requise.")
 
     st.write_stream(
-        stream_text(f"""Si vous n'avez pas cette somme, ou si vous ne
-souhaitez pas la lui payer, rendez-vous au""")
+        stream_text("Si vous n'avez pas cette somme, ou si vous ne souhaitez pas la lui payer, rendez-vous au :")
     )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_247.py", label="247", icon="📄")
+    st.page_link("pages/page_247.py", label="247", icon="📄")
 
 with tab2:
     display_inventory()
@@ -56,3 +45,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

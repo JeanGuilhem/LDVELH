@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, is_new_page, add_gold
 from utils import stream_text, set_cookies, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -28,7 +28,8 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
     
-    st.session_state.purse += 16
+    if is_new_page():
+        add_gold(16)
     st.metric(label="Couronnes", value=st.session_state.purse, delta=+16)
     
     st.write_stream(
@@ -45,3 +46,5 @@ with tab2:
 
 with tab3:
     st.image("static/map_1.png")
+
+end_page()

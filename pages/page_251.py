@@ -1,7 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai
+from utils import stream_text, set_cookies, called_cookies, handle_repas, ls_death, table_des_hasards
 
 
 if "weapon_mastery" not in st.session_state:
@@ -11,10 +10,15 @@ if "weapon_mastery" not in st.session_state:
     if not is_good:
         st.stop()
 
+st.session_state.current_page_number = 251
+
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=st.session_state.current_page_number)
 
 fr_text = """
+Vous avez de la chance : ils ne semblent pas vous avoir repéré. Ils
+avancent avec lenteur et finissent par disparaître à l'autre bout
+de la corniche. Vous reprenez alors votre course.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
@@ -23,28 +27,12 @@ with tab1:
     st.write(fr_text)
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Rendez-vous au:"""
         )
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
-
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("pages/page_10.py", label="10", icon="📄")
 
 
 with tab2:
@@ -53,3 +41,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

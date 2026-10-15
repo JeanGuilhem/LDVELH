@@ -1,51 +1,34 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=205)
 
 fr_text = """
+Leur chef ramasse votre Équipement et vous fait signe d'avancer
+le long du chemin. Les deux autres ont alors un sourire mauvais
+et vous vous rendez soudain compte qu'il ne s'agit pas du tout de
+soldats : ce sont des brigands déguisés. Vous prenez aussitôt la
+fuite en courant à toutes jambes vers la capitale. Mais au même
+instant, un frisson vous parcourt l'échiné : vous venez en effet
+d'entendre derrière vous le déclic d'une arbalète que l'on arme.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
-
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    number = hazard_roll()
+    if number is not None and number <= 4:
+        st.page_link("pages/page_181.py", label="181", icon="📄")
+    elif number is not None:
+        st.page_link("pages/page_145.py", label="145", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +36,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

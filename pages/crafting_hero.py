@@ -1,398 +1,182 @@
-import streamlit as st
-import utils
 import time
 
-import variable
-from utils import stream_text, initialize_session_state
-from inventory import add_to_inventory, display_inventory
+import streamlit as st
+
+from inventory import add_gold, add_to_inventory, display_inventory, reset_state
 from text import (
-    fr_kai_mastery,
+    fr_determine_ability_endurance,
     fr_first_items,
     fr_hazard_item,
+    fr_kai_mastery,
     second_fr_kai_mastery,
-    fr_determine_ability_endurance,
 )
-import pandas as pd
-from variable import KAI
+from utils import stream_text, table_des_hasards
+from variable import KAI, STARTING_ITEM_TABLE, WEAPON_MASTERY_TABLE
 
-initialize_session_state()
+# Une nouvelle partie commence à chaque fois qu'on arrive sur cette page depuis ailleurs.
+# Les reruns de la page (clics sur les boutons) ne doivent pas tout effacer.
+if st.session_state.get("game_phase") != "creation":
+    reset_state()
+    st.session_state.game_phase = "creation"
 
 
-def first_inventory_check() -> bool:
-    """
-    In the start of a new adventure, the LS chose (or not?) what to bring.
-    """
-    if "first_text" not in st.session_state:
-        st.write_stream(stream_text(fr_first_items))
-        st.session_state.first_text = False
+def roll() -> int:
+    """Table de Hasard : chiffre de 0 à 9, comme dans le livre."""
+    with st.spinner():
+        time.sleep(1)
+    return table_des_hasards() % 10
+
+
+def write_once(key: str, text: str) -> None:
+    """Affiche le texte en streaming la première fois, puis directement aux reruns suivants."""
+    if key not in st.session_state:
+        st.write_stream(stream_text(text))
+        st.session_state[key] = True
     else:
-        st.write(fr_first_items)
-        st.session_state.first_text = True
-
-    col3, col4 = st.columns(2)
-
-    if not st.session_state.weapon1:
-        st.session_state.weapon1 = "HACHE"
-        col3.metric(label="Arme 1", value=st.session_state.weapon1)
-    else:
-        col3.metric(label="Arme 1", value=st.session_state.weapon1)
-
-    if "first_meal" not in st.session_state:
-        add_to_inventory(name="Repas")
-        st.session_state.first_meal = True
-    col4.metric(label="Objet trouvé", value="Repas")
-
-    if not st.session_state.first_text:
-        st.session_state.first_text = st.button(
-            f"Déterminer votre nombre de pièces d'or",
-        )
-    else:
-        if "number" not in st.session_state:
-            with st.spinner():
-                time.sleep(1)
-            number = utils.table_des_hasards()
-            st.session_state.number = number
-
-        st.write(f"*Vous avez tiré le {st.session_state.number}.*")
-        gold_ammount = st.session_state.number
-        if st.session_state.purse == 0:
-            st.session_state.purse += gold_ammount
-
-        st.metric(
-            label="Couronnes",
-            value=gold_ammount,
-            delta=gold_ammount,
-        )
-
-        if "second_text" not in st.session_state:
-            st.write_stream(stream_text(fr_hazard_item))
-            st.session_state.second_text = False
-        else:
-            st.write(fr_hazard_item)
-            st.session_state.second_text = True
-
-        if not st.session_state.second_text:
-            st.session_state.second_text = st.button(
-                f"Cliquez ici pour fouiller les ruines.."
-            )
-
-        else:
-            if "first_item" not in st.session_state:
-                with st.spinner():
-                    time.sleep(1)
-                random_item = utils.table_des_hasards()
-                st.session_state.first_item = random_item
-                st.write_stream(
-                    stream_text(f"*Vous avez tiré le {st.session_state.first_item}.*")
-                )
-            if st.session_state.first_item == 1:
-                st.session_state.weapon2 = "ÉPÉE"
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez une épée dans les décombres de votre monastère."
-                    )
-                )
-                st.metric(label="Arme 2", value=st.session_state.weapon2)
-                return True
-
-            if st.session_state.first_item == 2:
-                st.session_state.total_endurance += 2
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez un casque dans les décombres du monastère. Vous vous en coiffez et augmentez "
-                        f"votre total d'endurance de 2."
-                    )
-                )
-                tab10, tab11 = st.columns(2)
-                tab10.metric(label="Objet trouvé", value="Casque")
-                tab11.metric(
-                    label="Endurance totale",
-                    value=st.session_state.total_endurance,
-                    delta=2,
-                )
-                return True
-
-            if st.session_state.first_item == 3:
-                add_to_inventory(name="Repas")
-                add_to_inventory(name="Repas")
-                col1, col2 = st.columns(2)
-                col1.metric(label="Objet trouvé", value="Repas")
-                col2.metric(label="Objet trouvé", value="Repas")
-                st.write_stream(
-                    stream_text(
-                        f"Vous parvenez à extraire 2 Repas supplémentaires des ruines de votre monastère."
-                    )
-                )
-                return True
-
-            if st.session_state.first_item == 4:
-                add_to_inventory(name="COTTE DE MAILLES")
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez une côte de mailles dans les décombres de votre monastère. Vous vous en "
-                        f"vêtissez, ce qui augmente votre total d'endurance de 4."
-                    )
-                )
-                st.metric(label="Objet trouvé", value="COTTE DE MAILLES")
-                st.metric(
-                    label="Endurance total",
-                    value=st.session_state.total_endurance,
-                    delta=st.session_state.total_endurance + 4,
-                )
-                st.session_state.total_endurance += 4
-                return True
-
-            if st.session_state.first_item == 5:
-                st.session_state.weapon2 = "MASSE D'ARMES"
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez une masse d'armes dans les décombres de votre monastère."
-                    )
-                )
-                st.metric(label="Arme 2", value=st.session_state.weapon2)
-                return True
-
-            if st.session_state.first_item == 6:
-                add_to_inventory(name="POTION DE GUÉRISON")
-                st.write_stream(
-                    stream_text(
-                        f"Vous trouvez une potion de guérison encore intact dans les décombres et ruines "
-                        f"environnantes."
-                    )
-                )
-                st.metric(label="Objet trouvé", value="POTION DE GUÉRISON")
-
-                return True
-
-            if st.session_state.first_item == 7:
-                st.session_state.weapon2 = "BATON"
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez un baton dans les décombres de votre monastère."
-                    )
-                )
-                st.metric(label="Arme 2", value=st.session_state.weapon2)
-
-                return True
-
-            if st.session_state.first_item == 8:
-                ga = 12
-                st.write_stream(
-                    stream_text(
-                        f"Vous trouvez une bourse en cuir dans laquelle se trouve 12 couronnes."
-                    )
-                )
-
-                st.session_state.purse += ga
-                st.metric(
-                    label="Couronnes",
-                    value=st.session_state.purse,
-                    delta=ga,
-                )
-
-                return True
-
-            if st.session_state.first_item == 9:
-                st.session_state.weapon2 = "LANCE"
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez une lance dans les décombres de votre monastère."
-                    )
-                )
-                st.metric(label="Arme 2", value=st.session_state.weapon2)
-
-                return True
-
-            if st.session_state.first_item == 10:
-                st.session_state.weapon2 = "GLAIVE"
-                st.write_stream(
-                    stream_text(
-                        f"Vous déterrez un glaive dans les décombres de votre monastère."
-                    )
-                )
-                st.metric(label="Arme 2", value=st.session_state.weapon2)
-
-                return True
+        st.write(text)
 
 
 def determine_endurance_ability() -> bool:
-    """
-    Used to determine total endurance and ability of the LS
-    Called before everything.
-    """
-    if "fae" not in st.session_state:
-        st.session_state.abi, st.session_state.endu = False, False
-        st.write_stream(stream_text(text=fr_determine_ability_endurance))
-        st.session_state.fae = True
-    else:
-        st.write(fr_determine_ability_endurance)
-
+    """HABILETÉ = 10 + Table de Hasard, ENDURANCE = 20 + Table de Hasard. Un seul tirage chacun."""
+    write_once("text_ability", fr_determine_ability_endurance)
     col1, col2 = st.columns(2)
-    if "ability_number" not in st.session_state:
-        st.session_state.ability_number = 0
-    if "endurance_number" not in st.session_state:
-        st.session_state.endurance_number = 0
 
     with col1:
-
-        if st.button(
-            f"Déterminer votre habilité au combat",
-        ):
-            with st.spinner():
-                time.sleep(1)
-            st.session_state.ability_number = utils.table_des_hasards()
-            st.write_stream(
-                stream_text(
-                    text=f"*Vous avez tiré le {st.session_state.ability_number}*"
-                )
-            )
-
-            st.session_state.hability = st.session_state.ability_number + 10
+        if "ability_roll" not in st.session_state:
+            if st.button("Déterminer votre habileté au combat"):
+                st.session_state.ability_roll = roll()
+                st.session_state.hability = 10 + st.session_state.ability_roll
+                st.rerun()
+        else:
+            st.write(f"*Vous avez tiré le {st.session_state.ability_roll}*")
             st.metric(
-                label="Habilité",
+                label="Habileté",
                 value=st.session_state.hability,
-                delta=st.session_state.ability_number,
+                delta=st.session_state.ability_roll,
             )
-            st.session_state.abi = True
-        elif st.session_state.hability != 0:
-            st.write(f"*Vous avez tiré le {st.session_state.ability_number}*")
-            st.metric(
-                label="Habilité",
-                value=st.session_state.hability,
-                delta=st.session_state.ability_number,
-            )
-            st.session_state.abi = True
 
     with col2:
-        if st.button(
-            f"Déterminer votre endurance",
-        ):
-            with st.spinner():
-                time.sleep(1)
-            st.session_state.endurance_number = utils.table_des_hasards()
-            st.write_stream(
-                stream_text(
-                    text=f"*Vous avez tiré le {st.session_state.endurance_number}*"
-                )
-            )
-            st.session_state.endurance += 20
-            st.session_state.total_endurance += 20
+        if "endurance_roll" not in st.session_state:
+            if st.button("Déterminer votre endurance"):
+                st.session_state.endurance_roll = roll()
+                st.session_state.total_endurance = 20 + st.session_state.endurance_roll
+                st.session_state.endurance = st.session_state.total_endurance
+                st.rerun()
+        else:
+            st.write(f"*Vous avez tiré le {st.session_state.endurance_roll}*")
             st.metric(
                 label="Endurance",
                 value=st.session_state.total_endurance,
-                delta=st.session_state.endurance_number,
-            )
-            st.session_state.endu = True
-
-        elif st.session_state.total_endurance != 0:
-            st.write(f"*Vous avez tiré le {st.session_state.endurance_number}*")
-            st.metric(
-                label="Endurance",
-                value=st.session_state.total_endurance,
-                delta=st.session_state.endurance_number,
+                delta=st.session_state.endurance_roll,
             )
 
-    if st.session_state.abi and st.session_state.endu:
-        return True
-
-    return False
+    return "ability_roll" in st.session_state and "endurance_roll" in st.session_state
 
 
 def determine_kai_mastery() -> bool:
-    """
-    Used to determine which Kai mastery the LS chose.
-    Called before first_inventory_check
-    """
-    finished = False
-    if "dka" not in st.session_state:
-        st.write_stream(stream_text(second_fr_kai_mastery))
-        st.write_stream(
-            stream_text("Quelles Maîtrises Kaï choisissez-vous (5 au maximum)?")
-        )
-        st.session_state.dka = True
-    else:
-        st.write(second_fr_kai_mastery)
-        st.write("Quelles Maîtrises Kaï choisissez-vous (5 au maximum)?")
+    """Choix des 5 Disciplines Kaï, puis tirage de l'arme si la Maîtrise des armes est choisie."""
+    write_once("text_kai", second_fr_kai_mastery)
 
-    option_1 = st.checkbox("Le Camouflage")
-    option_2 = st.checkbox("La Chasse")
-    option_3 = st.checkbox("Le Sixième Sens")
-    option_4 = st.checkbox("L'Orientation")
-    option_5 = st.checkbox("La Guérison")
-    option_6 = st.checkbox("La Maîtrise des armes")
-    if option_6:
-        if "wm" not in st.session_state or st.session_state.wm is False:
-            number = utils.table_des_hasards()
-            if number == 10:
-                number = 1
-            st.session_state.wm = number
-            st.write_stream(
-                stream_text(
-                    f"*Vous avez tiré le {number}*. Vous maitrisez cette arme: {variable.WEAPON[number-1]}"
-                )
-            )
-            st.session_state.weapon_mastery.append(variable.WEAPON[number - 1])
-        elif "wm" in st.session_state:
+    if st.session_state.kai:
+        for discipline in st.session_state.kai:
+            st.write(f"- **{discipline}**")
+        if st.session_state.weapon_mastery:
             st.write(
-                f"*Vous avez tiré le {st.session_state.wm}*. Vous maitrisez cette arme: {variable.WEAPON[st.session_state.wm-1]}"
+                f"*Vous avez tiré le {st.session_state.weapon_mastery_roll}*. "
+                f"Vous maîtrisez cette arme : **{st.session_state.weapon_mastery[0]}**"
             )
+        return True
 
-    if not option_6:
-        st.session_state.weapon_mastery = []
-        st.session_state.wm = False
-
-    option_7 = st.checkbox("Bouclier psychique")
-    option_8 = st.checkbox("Puissance psychique")
-    option_9 = st.checkbox("Communication Animale")
-
-    lst = [
-        option_1,
-        option_2,
-        option_3,
-        option_4,
-        option_5,
-        option_6,
-        option_7,
-        option_8,
-        option_9,
-    ]
-
-    if len([ele for ele in lst if ele is True]) == 5:
-        kai = {
-            "Mastery": [None for _ in range(0, 6)],
-            "Description": [None for _ in range(0, 6)],
-        }
-        st.session_state.kai = pd.DataFrame(kai)
-        for index, element in enumerate(lst):
-            if element is True:
-                master = list(KAI.keys())[index]
-                new_item = {
-                    "Mastery": master,
-                    "Description": KAI.get(master),
-                }
-                if master not in list(st.session_state.kai["Mastery"]):
-                    st.session_state.kai = pd.concat(
-                        [st.session_state.kai, pd.DataFrame([new_item])],
-                        ignore_index=True,
-                    )
-        finished = True
-    elif len([ele for ele in lst if ele is True]) > 5:
-        st.error(f"Vous ne pouvez maitriser que 5 disciplines.")
-
-    return finished
+    choices = st.multiselect(
+        "Quelles Disciplines Kaï choisissez-vous ? (5 au maximum)",
+        options=list(KAI.keys()),
+        max_selections=5,
+    )
+    if st.button(
+        "Valider mes Disciplines Kaï",
+        disabled=len(choices) != 5,
+        help="Choisissez exactement 5 Disciplines.",
+    ):
+        st.session_state.kai = list(choices)
+        if "La Maîtrise des armes" in choices:
+            st.session_state.weapon_mastery_roll = roll()
+            st.session_state.weapon_mastery = [
+                WEAPON_MASTERY_TABLE[st.session_state.weapon_mastery_roll]
+            ]
+        st.rerun()
+    return False
 
 
-tab1, tab2 = st.tabs(["Loup Solitaire", "Maitrise Kaï"])
+def apply_starting_item(number: int) -> None:
+    """Objet trouvé dans les ruines du monastère (appliqué une seule fois)."""
+    found = STARTING_ITEM_TABLE[number]
+    if isinstance(found, int):
+        add_gold(found)
+    elif found == "REPAS":
+        add_to_inventory("REPAS", quantity=2)
+    else:
+        add_to_inventory(found)
+
+
+STARTING_ITEM_TEXT = {
+    1: "Vous déterrez une Épée dans les décombres de votre monastère.",
+    2: "Vous déterrez un Casque et vous vous en coiffez : votre total d'ENDURANCE augmente de 2 points.",
+    3: "Vous parvenez à extraire 2 Repas supplémentaires des ruines de votre monastère.",
+    4: "Vous déterrez une Cotte de Mailles et vous vous en vêtez : votre total d'ENDURANCE augmente de 4 points.",
+    5: "Vous déterrez une Masse d'Armes dans les décombres de votre monastère.",
+    6: "Vous trouvez une Potion de Guérison encore intacte dans les décombres.",
+    7: "Vous déterrez un Bâton dans les décombres de votre monastère.",
+    8: "Vous déterrez une Lance dans les décombres de votre monastère.",
+    9: "Vous trouvez une bourse en cuir dans laquelle se trouvent 12 Couronnes.",
+    0: "Vous déterrez un Glaive dans les décombres de votre monastère.",
+}
+
+
+def first_inventory_check() -> bool:
+    """Équipement de départ : Hache, Repas, Carte, Couronnes et un objet tiré au hasard."""
+    write_once("text_first_items", fr_first_items)
+
+    if "starting_kit" not in st.session_state:
+        add_to_inventory("HACHE")
+        add_to_inventory("REPAS")
+        add_to_inventory("CARTE GÉOGRAPHIQUE")
+        st.session_state.starting_kit = True
+
+    col1, col2 = st.columns(2)
+    col1.metric(label="Arme", value="HACHE")
+    col2.metric(label="Sac à Dos", value="REPAS")
+
+    if "gold_roll" not in st.session_state:
+        if st.button("Déterminer votre nombre de Couronnes"):
+            st.session_state.gold_roll = roll()
+            add_gold(st.session_state.gold_roll)
+            st.rerun()
+        return False
+
+    st.write(f"*Vous avez tiré le {st.session_state.gold_roll}.*")
+    st.metric(label="Couronnes", value=st.session_state.gold_roll, delta=st.session_state.gold_roll)
+
+    write_once("text_hazard_item", fr_hazard_item)
+    if "item_roll" not in st.session_state:
+        if st.button("Cliquez ici pour fouiller les ruines.."):
+            st.session_state.item_roll = roll()
+            apply_starting_item(st.session_state.item_roll)
+            st.rerun()
+        return False
+
+    st.write(f"*Vous avez tiré le {st.session_state.item_roll}.*")
+    st.write(STARTING_ITEM_TEXT[st.session_state.item_roll])
+    return True
+
+
+tab1, tab2 = st.tabs(["Loup Solitaire", "Maîtrise Kaï"])
 
 with tab1:
-    fini = determine_endurance_ability()
-    if fini:
+    if determine_endurance_ability():
         st.divider()
-        finished = determine_kai_mastery()
-        if finished is True:
+        if determine_kai_mastery():
             st.divider()
-            f = first_inventory_check()
-            if f:
+            if first_inventory_check():
                 st.divider()
                 with st.expander(label="Afficher mon inventaire"):
                     display_inventory()

@@ -1,6 +1,6 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory
-from utils import stream_text, set_cookies, called_cookies, change_visiblity
+from inventory import display_inventory, check_inventory, end_page, has_kai, pickup_button
+from utils import stream_text, set_cookies, called_cookies
 
 if "weapon_mastery" not in st.session_state:
     st.warning(f"Loading data from your previous session..")
@@ -22,27 +22,18 @@ Poignard.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
-visibility_1, visibility_2, visibility_3 = False, False, False
-
-if len(st.session_state.backpack["Nom"]) >= 8:
-    visibility_1, visibility_2 = True, True
-if st.session_state.weapon1 and st.session_state.weapon2:
-    visibility_3 = True
-
 
 with tab1:
     st.write(fr_text)
 
-    if st.checkbox(label="Repas", key="1", disabled=visibility_1, on_change=change_visiblity, args=(visibility_1,)):
-        add_to_inventory(name="Repas")
-    if st.checkbox(label="Repas", key="2", disabled=visibility_2, on_change=change_visiblity, args=(visibility_2,)):
-        add_to_inventory(name="Repas")
-    if st.checkbox(label="Poignard", disabled=visibility_3, on_change=change_visiblity, args=(visibility_3)):
-        add_to_inventory(name="POIGNARD")
+    pickup_button("SAC À DOS", key="1", label="Prendre le Sac à Dos")
+    pickup_button("REPAS", key="2", label="Prendre un Repas")
+    pickup_button("REPAS", key="3", label="Prendre un Repas")
+    pickup_button("POIGNARD", key="4", label="Prendre le Poignard")
 
     st.write_stream(
         stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
+            f"""Rendez-vous ensuite au :"""
         )
     )
     fi_1 = True
@@ -56,3 +47,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

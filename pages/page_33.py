@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
+from inventory import display_inventory, check_inventory, end_page, has_kai, is_new_page, add_gold
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -29,7 +29,8 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.session_state.purse += 3
+    if is_new_page():
+        add_gold(3)
     st.metric(label="Couronnes", value=st.session_state.purse, delta=+3)
     st.write_stream(
         stream_text(
@@ -48,3 +49,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()

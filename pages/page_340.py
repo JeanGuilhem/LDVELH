@@ -1,51 +1,32 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory
-from utils import stream_text, set_cookies, called_cookies
-
-
+from combat import combat
+from inventory import display_inventory, check_inventory, end_page
+from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
-    st.warning(f"Loading data from your previous session..")
-    # means that session state is not set up, needs to fetch data from cookies
-    is_good = called_cookies()  # in case of reloading page
-    if not is_good:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
         st.stop()
 
-check_inventory(is_fighting=False,
-                current_page_number=1)
+check_inventory(current_page_number=340)
 
 fr_text = """
+Vous galopez à la rencontre du Loup Maudit et de son cavalier,
+votre arme prête à frapper. Le Glok vous voit et dégaine aussitôt
+son cimeterre. Vous combattez le Loup Maudit et le Glok en les
+considérant comme un seul et même adversaire.
 """
 
 tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
-    st.write_stream(
-        stream_text(
-            f"""Si vous souhaitez prendre le sentier de droite, rendez-vous au:"""
-        )
-    )
-    fi = True
-    if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
 
-    st.write_stream(
-        stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
-    )
-    fi_1 = True
-    if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
+    outcome = combat([("GLOK + LOUP MAUDIT", 14, 24)])
 
-    st.write_stream(
-        stream_text(
-            f"""Enfin, si vous maîtrisez la Discipline Kaï du Sixième Sens, rendez-vous au:"""
-        )
-    )
-    fi_2 = True
-    if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
-
+    if outcome == "win":
+        st.write_stream(stream_text("Vous êtes vainqueur, rendez-vous au :"))
+        st.page_link("pages/page_193.py", label="193", icon="📄")
 
 with tab2:
     display_inventory()
@@ -53,3 +34,4 @@ with tab2:
 with tab3:
     st.image("static/map_1.png")
 
+end_page()
