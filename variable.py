@@ -238,7 +238,8 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
 
 
 7.  Or (Couronnes), importés de inventory :
-    * Or imposé par le texte (récompense, vol...) : add_gold(montant) dans la condition anti-rerun.
+    * Or donné d'office par le texte (récompense, bourse trouvée...) : receive_gold(montant). Il gère tout seul
+      l'anti-rerun et l'affichage (bourse + gain + pop-up) : pas de condition ni de st.metric autour.
     * Or que le joueur « peut prendre » : pickup_gold(montant, key="gold").
     * Paiement : spend_gold(montant) renvoie False si la bourse ne suffit pas. Un choix qui demande de payer
       se fait avec un st.button : if st.button("Payer 10 Couronnes", disabled=st.session_state.purse < 10):

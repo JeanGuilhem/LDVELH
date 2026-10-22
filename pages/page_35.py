@@ -12,7 +12,7 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=35)
 
 fr_text = """
 La forêt devient de plus en plus dense, et un enchevêtrement de

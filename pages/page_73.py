@@ -10,7 +10,7 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=72)
+                current_page_number=73)
 
 fr_text = """
 Vous ramenez votre cape autour de vos épaules et vous vous

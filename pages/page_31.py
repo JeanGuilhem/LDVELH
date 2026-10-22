@@ -12,7 +12,7 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=31)
 
 fr_text = """
 Vous essayez de réconforter de votre mieux l'homme blessé, mais

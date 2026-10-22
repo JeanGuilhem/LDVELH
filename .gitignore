@@ -1,0 +1,12 @@
+# Bytecode Python
+__pycache__/
+*.pyc
+
+# Livre source : sert uniquement à générer les pages, ne doit pas être publié
+*.pdf
+
+# Environnements et secrets locaux
+.venv/
+venv/
+.env
+.streamlit/secrets.toml

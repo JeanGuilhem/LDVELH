@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, is_new_page, add_gold, pickup_button
+from inventory import display_inventory, check_inventory, end_page, pickup_button, receive_gold
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -22,9 +22,7 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
 
-    if is_new_page():
-        add_gold(15)
-        st.success("Vous empochez les 15 Pièces d'Or.")
+    receive_gold(15)
 
     st.write("Vous pouvez ramasser la Clé d'Argent :")
     pickup_button("CLÉ D'ARGENT", key="silver_key", label="Prendre la Clé d'Argent (Objet Spécial)")

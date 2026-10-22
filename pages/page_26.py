@@ -12,7 +12,7 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=26)
 
 fr_text = """
 Vous avancez prudemment le long du couloir qui tourne bientôt

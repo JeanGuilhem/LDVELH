@@ -142,6 +142,8 @@ def check_inventory(is_fighting: bool = False, current_page_number: int = 0) -> 
     """
     init_state()
     st.session_state.current_page_number = current_page_number
+    st.set_page_config(page_title=f"Paragraphe {current_page_number}", page_icon="📜")
+    st.header(f"📜 Paragraphe {current_page_number}", divider="gray")
     if is_new_page():
         _reset_page_flags()
         st.session_state.page_has_fight = is_fighting or _page_has_fight(current_page_number)
@@ -353,27 +355,56 @@ def pickup_button(name: str, key: str, label: str = None) -> None:
 
 
 def pickup_gold(amount: int, key: str = "gold") -> None:
-    """Bouton « Prendre X Couronnes » (une seule fois par visite de la page)."""
-    flag = f"visibility_{key}"
-    clicked = st.button(
-        f"Prendre {amount} Couronnes",
-        key=f"pickup_{key}",
-        disabled=st.session_state.get(flag, False),
-    )
-    if clicked and not st.session_state.get(flag, False):
-        add_gold(amount)
-        st.session_state[flag] = True
+    """
+    Bouton « Prendre X Couronnes » (une seule fois par visite de la page). Une fois l'or pris,
+    affiche la bourse avec le gain, comme l'ENDURANCE en combat, et un pop-up.
+    """
+    flag = f"visibility_{key}"  # False tant que l'or n'est pas pris, puis le montant réellement gagné
+    taken = st.session_state.get(flag, False) is not False
+    clicked = st.button(f"Prendre {amount} Couronnes", key=f"pickup_{key}", disabled=taken)
+    if clicked and not taken:
+        st.session_state[flag] = add_gold(amount, notify=False)
+        st.session_state[f"{flag}_toast"] = True
         st.rerun()
+    if taken:
+        _show_gold_gain(flag, amount)
+
+
+def receive_gold(amount: int, key: str = "gold_received") -> None:
+    """
+    Or donné d'office par le texte (récompense, bourse trouvée...) : ajouté une seule fois par
+    visite de la page, avec le même affichage que pickup_gold.
+    """
+    flag = f"visibility_{key}"
+    if st.session_state.get(flag, False) is False:
+        st.session_state[flag] = add_gold(amount, notify=False)
+        st.session_state[f"{flag}_toast"] = True
+    _show_gold_gain(flag, amount)
+
+
+def _show_gold_gain(flag: str, amount: int) -> None:
+    """Bourse avec le gain en delta (reste affichée pendant la visite) et pop-up la première fois."""
+    gained = st.session_state[flag]
+    st.metric(
+        label="Couronnes",
+        value=f"{st.session_state.purse}/{MAX_PURSE}",
+        delta=f"+{gained}" if gained else None,
+    )
+    if gained < amount:
+        st.caption(f"Votre bourse est pleine : vous laissez {amount - gained} Couronne(s) sur place.")
+    if st.session_state.get(f"{flag}_toast"):
+        st.toast(f"**+{gained} Couronne(s)** ({st.session_state.purse}/{MAX_PURSE})", icon="💰")
+        st.session_state[f"{flag}_toast"] = False
 
 
 # --------------------------------------------------------------------------------------
 # Couronnes et ENDURANCE
 # --------------------------------------------------------------------------------------
-def add_gold(amount: int) -> int:
+def add_gold(amount: int, notify: bool = True) -> int:
     """Ajoute des Couronnes dans la limite de la bourse. Renvoie le montant réellement ajouté."""
     added = max(0, min(amount, MAX_PURSE - st.session_state.purse))
     st.session_state.purse += added
-    if added < amount:
+    if notify and added < amount:
         st.info(
             f"Votre bourse ne peut contenir que {MAX_PURSE} Couronnes : "
             f"vous laissez {amount - added} Couronnes."

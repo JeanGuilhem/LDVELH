@@ -12,7 +12,7 @@ if "weapon_mastery" not in st.session_state:
         st.stop()
 
 check_inventory(is_fighting=False,
-                current_page_number=1)
+                current_page_number=78)
 
 fr_text = """
 Au moment où la roulotte passe devant vous, vous faites un bond
