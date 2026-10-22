@@ -243,7 +243,7 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
     * Or que le joueur « peut prendre » : pickup_gold(montant, key="gold").
     * Paiement : spend_gold(montant) renvoie False si la bourse ne suffit pas. Un choix qui demande de payer
       se fait avec un st.button : if st.button("Payer 10 Couronnes", disabled=st.session_state.purse < 10):
-      spend_gold(10) puis st.switch_page("pages/page_XXX.py").
+      spend_gold(10) puis st.switch_page("tomes/tome1/page_XXX.py").
 
 8.  Objets à Ramasser: utiliser pickup_button(name, key, label) (importé de inventory). Il gère tout seul
     l'anti-rerun, les limites (8 objets dans le Sac à Dos, 2 armes) et le rangement (Armes, Sac à Dos ou Objets Spéciaux).
@@ -268,24 +268,24 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
       Ex (« on vous vole un objet du Sac à Dos, ou une arme si vous n'avez plus de Sac à Dos ») :
         candidats = st.session_state.backpack if st.session_state.backpack else st.session_state.weapons
         if choose_item_to_lose(list(candidats), key="theft"):
-            st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
+            st.page_link("tomes/tome1/page_XXX.py", label="XXX", icon="📄")
 
 
 9.  Discipline Kaï (Choix):
     * Utiliser la variable 'fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."' en haut du fichier.
     * Pour un choix conditionnel Kai (ex: "rendez-vous au 198"), utiliser has_kai (importé de inventory):
         if has_kai("NOM DE LA DISCIPLINE"):
-            st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
+            st.page_link("tomes/tome1/page_XXX.py", label="XXX", icon="📄")
         else:
             st.write_stream(stream_text(fr_unkown_kai))
-            st.page_link("pages/page_XXX.py", label="XXX", icon="📄", disabled=True)
+            st.page_link("tomes/tome1/page_XXX.py", label="XXX", icon="📄", disabled=True)
 
     Exemple (pour la Discipline Kaï du Sixième Sens vers 198):
         if has_kai("Le Sixième Sens"):
-            st.page_link("pages/page_198.py", label="198", icon="📄")
+            st.page_link("tomes/tome1/page_198.py", label="198", icon="📄")
         else:
             st.write_stream(stream_text(fr_unkown_kai))
-            st.page_link("pages/page_198.py", label="198", icon="📄", disabled=True)
+            st.page_link("tomes/tome1/page_198.py", label="198", icon="📄", disabled=True)
 
     
 10. Combat: utiliser combat() (from combat import combat). Elle affiche l'ennemi, les bonus, les boutons d'assaut
@@ -313,16 +313,16 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
         outcome = combat([("KRAAN", 16, 24)], hability_modifier=-1)
         if outcome == "win":
             st.write_stream(stream_text("Si vous êtes vainqueur, rendez-vous au :"))
-            st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
+            st.page_link("tomes/tome1/page_XXX.py", label="XXX", icon="📄")
 
     Exemple (tuer en 4 assauts ou moins -> 94, sinon -> 203, fuite après 2 assauts -> 7):
         outcome = combat([("VOLEUR", 13, 20)], max_rounds=4, flee_after=2)
         if outcome == "win":
-            st.page_link("pages/page_94.py", label="94", icon="📄")
+            st.page_link("tomes/tome1/page_94.py", label="94", icon="📄")
         elif outcome == "rounds_over":
-            st.page_link("pages/page_203.py", label="203", icon="📄")
+            st.page_link("tomes/tome1/page_203.py", label="203", icon="📄")
         elif outcome == "fled":
-            st.page_link("pages/page_7.py", label="7", icon="📄")
+            st.page_link("tomes/tome1/page_7.py", label="7", icon="📄")
 
     Exemple (deux Gloks à tour de rôle):
         outcome = combat([("Premier GLOK", 13, 10), ("Deuxième GLOK", 12, 10)])
@@ -358,9 +358,9 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
 
     number = hazard_roll()
     if number is not None and number <= 4:
-        st.page_link("pages/page_181.py", label="181", icon="📄")
+        st.page_link("tomes/tome1/page_181.py", label="181", icon="📄")
     elif number is not None:
-        st.page_link("pages/page_145.py", label="145", icon="📄")
+        st.page_link("tomes/tome1/page_145.py", label="145", icon="📄")
 
 """
 GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")

@@ -15,6 +15,7 @@ import unicodedata
 
 import streamlit as st
 
+from game_stats import record_page
 from save import delete_save, page_path, save_game
 from utils import ls_death
 from variable import ITEMS, KAI, MAX_BACKPACK, MAX_PURSE, MAX_WEAPONS
@@ -126,12 +127,12 @@ def is_new_page() -> bool:
     return st.session_state.last_page_number != st.session_state.current_page_number
 
 
-ILLUSTRATIONS_DIR = "static/illustrations"
+ILLUSTRATIONS_DIR = "static/illustrations/tome1"
 
 
 @functools.lru_cache(maxsize=None)
 def _illustrations_index() -> dict:
-    """{numéro de paragraphe: [illustrations]} d'après static/illustrations/illustrations.json."""
+    """{numéro de paragraphe: [illustrations]} d'après {ILLUSTRATIONS_DIR}/illustrations.json."""
     try:
         with open(f"{ILLUSTRATIONS_DIR}/illustrations.json", encoding="utf-8") as index_file:
             entries = json.load(index_file)
@@ -207,6 +208,8 @@ def end_page() -> None:
     if st.session_state.endurance <= 0:
         ls_death()
 
+    if is_new_page():
+        record_page()
     st.session_state.last_page_number = st.session_state.current_page_number
     save_game()
 

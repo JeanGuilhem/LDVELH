@@ -5,7 +5,7 @@ Utilisation dans une page :
 
     outcome = combat([("KRAAN", 16, 24)], hability_modifier=-1)
     if outcome == "win":
-        st.page_link("pages/page_XXX.py", label="XXX", icon="📄")
+        st.page_link("tomes/tome1/page_XXX.py", label="XXX", icon="📄")
 
 combat() affiche l'écran de combat et renvoie None tant que le combat n'est pas terminé, puis
 l'issue : "win", "fled", "rounds_over" (max_rounds atteint) ou "wounded" (stop_when_wounded).

@@ -28,14 +28,14 @@ with tab1:
     )
     fi = True
     if fi:
-        st.page_link("pages/page_85.py", label="85", icon="📄")
+        st.page_link("tomes/tome1/page_85.py", label="85", icon="📄")
 
     st.write_stream(
         stream_text(f"""Si vous préférez suivre celui de gauche, rendez-vous au:""")
     )
     fi_1 = True
     if fi_1:
-        st.page_link("pages/page_275.py", label="275", icon="📄")
+        st.page_link("tomes/tome1/page_275.py", label="275", icon="📄")
 
     st.write_stream(
         stream_text(
@@ -44,7 +44,7 @@ with tab1:
     )
     fi_2 = True
     if fi_2:
-        st.page_link("pages/page_141.py", label="141", icon="📄")
+        st.page_link("tomes/tome1/page_141.py", label="141", icon="📄")
 
     show_illustrations()
 

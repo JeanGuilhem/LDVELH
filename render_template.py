@@ -16,7 +16,7 @@ def generate_files(template_path, output_directory, num_files):
 
 if __name__ == "__main__":
     template_path = "template.py"  # Chemin vers le fichier template
-    output_directory = "pages"    # Répertoire où les fichiers seront générés
+    output_directory = "tomes/tome1"    # Répertoire où les fichiers seront générés
     num_files = 350                 # Nombre de fichiers à générer
 
     generate_files(template_path, output_directory, num_files)

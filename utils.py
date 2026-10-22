@@ -36,7 +36,7 @@ def called_cookies() -> bool:
         st.error(
             "Aucune sauvegarde trouvée. Si vous étiez en cours de partie, il vous faudra recommencer."
         )
-        st.page_link("pages/crafting_hero.py", label="Démarrer mon aventure", icon="⚔️")
+        st.page_link("tomes/tome1/crafting_hero.py", label="Démarrer mon aventure", icon="⚔️")
         return False
 
     init_state()
@@ -48,13 +48,15 @@ def ls_death():
     """
     Ths method is called when the LS died.
     """
+    from game_stats import record_death
     from save import delete_save
 
+    record_death()
     delete_save()  # sinon un rechargement du navigateur ramènerait la partie à la vie
     st.error(
         "Vous êtes mort ! Votre aventure s'arrête ici, ainsi que la lignée des Kai."
     )
-    st.page_link("pages/crafting_hero.py", label="Démarrer mon aventure", icon="⚔️")
+    st.page_link("tomes/tome1/crafting_hero.py", label="Démarrer mon aventure", icon="⚔️")
     st.stop()
 
 
@@ -155,7 +157,7 @@ def ai_generate_page(page_text: str, page_number: int):
         )
 
         print("Creating page...")
-        file_name = f"pages/page_{page_number}.py"
+        file_name = f"tomes/tome1/page_{page_number}.py"
         with open(file_name, "w", encoding="utf-8") as f:
             code = response.text.strip().replace("```python", "").replace("```", "")
             f.write(code)

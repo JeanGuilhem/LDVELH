@@ -1,0 +1,39 @@
+import streamlit as st
+from combat import combat
+from inventory import display_inventory, check_inventory, end_page, show_illustrations
+from utils import stream_text, called_cookies
+
+if "weapon_mastery" not in st.session_state:
+    # rechargement du navigateur : on restaure la sauvegarde
+    if not called_cookies():
+        st.stop()
+
+check_inventory(current_page_number=340)
+
+fr_text = """
+Vous galopez à la rencontre du Loup Maudit et de son cavalier,
+votre arme prête à frapper. Le Glok vous voit et dégaine aussitôt
+son cimeterre. Vous combattez le Loup Maudit et le Glok en les
+considérant comme un seul et même adversaire.
+"""
+
+tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
+
+with tab1:
+    st.write(fr_text)
+
+    outcome = combat([("GLOK + LOUP MAUDIT", 14, 24)])
+
+    if outcome == "win":
+        st.write_stream(stream_text("Vous êtes vainqueur, rendez-vous au :"))
+        st.page_link("tomes/tome1/page_193.py", label="193", icon="📄")
+
+    show_illustrations()
+
+with tab2:
+    display_inventory()
+
+with tab3:
+    st.image("static/map_1.png")
+
+end_page()

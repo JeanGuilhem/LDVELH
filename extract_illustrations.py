@@ -1,7 +1,7 @@
 """
-Extrait les illustrations du PDF d'un tome vers static/illustrations/.
+Extrait les illustrations du PDF d'un tome vers static/illustrations/<tome>/.
 
-    python extract_illustrations.py tome1.pdf
+    python extract_illustrations.py tome1.pdf static/illustrations/tome1
 
 - Vignettes : images placées dans le texte, juste après le paragraphe qu'elles illustrent.
   Elles sont rattachées au paragraphe en cours à l'endroit de l'image -> p{N}_vignette.{ext}
@@ -19,24 +19,24 @@ import sys
 
 import fitz
 
-OUTPUT_DIR = os.path.join("static", "illustrations")
+DEFAULT_OUTPUT_DIR = os.path.join("static", "illustrations", "tome1")
 FIRST_STORY_PAGE = 7  # avant : couverture et pages de garde
 MIN_VIGNETTE_SIZE = (100, 40)  # en dessous : ornement décoratif
 CHAPTER_MARKER = re.compile(r"^\s*(\d{1,3})\s*$")
 
 
-def save_image(doc, xref: int, name: str) -> str:
-    """Enregistre l'image `xref` sous OUTPUT_DIR/name.<ext> et renvoie le nom du fichier."""
+def save_image(doc, xref: int, name: str, output_dir: str) -> str:
+    """Enregistre l'image `xref` sous output_dir/name.<ext> et renvoie le nom du fichier."""
     image = doc.extract_image(xref)
     file_name = f"{name}.{image['ext']}"
-    with open(os.path.join(OUTPUT_DIR, file_name), "wb") as output:
+    with open(os.path.join(output_dir, file_name), "wb") as output:
         output.write(image["image"])
     return file_name
 
 
-def extract(pdf_path: str, max_chapters: int = 350) -> list:
+def extract(pdf_path: str, output_dir: str = DEFAULT_OUTPUT_DIR, max_chapters: int = 350) -> list:
     doc = fitz.open(pdf_path)
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    os.makedirs(output_dir, exist_ok=True)
     index = []
     current_chapter = 0
     previous_line = ""
@@ -87,7 +87,7 @@ def extract(pdf_path: str, max_chapters: int = 350) -> list:
                 suffix = "" if count == 1 else f"_{count}"
                 kind, chapter, name = "vignette", current_chapter, f"p{current_chapter}_vignette{suffix}"
 
-            file_name = save_image(doc, xref, name)
+            file_name = save_image(doc, xref, name, output_dir)
             index.append(
                 {
                     "file": file_name,
@@ -98,12 +98,15 @@ def extract(pdf_path: str, max_chapters: int = 350) -> list:
                 }
             )
 
-    with open(os.path.join(OUTPUT_DIR, "illustrations.json"), "w", encoding="utf-8") as output:
+    with open(os.path.join(output_dir, "illustrations.json"), "w", encoding="utf-8") as output:
         json.dump(index, output, ensure_ascii=False, indent=1)
     return index
 
 
 if __name__ == "__main__":
-    result = extract(sys.argv[1] if len(sys.argv) > 1 else "tome1.pdf")
+    result = extract(
+        sys.argv[1] if len(sys.argv) > 1 else "tome1.pdf",
+        sys.argv[2] if len(sys.argv) > 2 else DEFAULT_OUTPUT_DIR,
+    )
     for kind in ("vignette", "planche"):
         print(f"{kind}s : {sum(1 for item in result if item['type'] == kind)}")
