@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page
+from inventory import display_inventory, check_inventory, end_page, show_illustrations
 from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
@@ -29,6 +29,8 @@ with tab1:
     elif number is not None:
         st.write_stream(stream_text("Vous avez encore des progrès à faire dans la Discipline Kaï du Camouflage, car l'un de vos ennemis a tôt fait de vous trouver et de vous attaquer. Rendez-vous au 72 pour voir à qui vous avez affaire."))
         st.page_link("pages/page_72.py", label="72", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

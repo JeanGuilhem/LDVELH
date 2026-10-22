@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -35,6 +35,8 @@ with tab1:
         stream_text(f"""Si vous préférez aller vers le sud, là où les sous-bois sont moins touffus et vous enfoncer plus avant dans la forêt, rendez-vous au:""")
     )
     st.page_link("pages/page_215.py", label="215", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

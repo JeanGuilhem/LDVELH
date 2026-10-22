@@ -1,0 +1,562 @@
+[
+ {
+  "file": "p7_planche.jpeg",
+  "type": "planche",
+  "paragraph": 7,
+  "pdf_page": 28,
+  "size": [
+   470,
+   842
+  ],
+  "caption": "Les hauts murs de pierre de la citadelle resplendissent au soleil."
+ },
+ {
+  "file": "p23_planche.jpeg",
+  "type": "planche",
+  "paragraph": 23,
+  "pdf_page": 34,
+  "size": [
+   464,
+   836
+  ],
+  "caption": "Une broche sculptée semble fermer le panneau de la porte."
+ },
+ {
+  "file": "p30_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 30,
+  "pdf_page": 37,
+  "size": [
+   311,
+   197
+  ]
+ },
+ {
+  "file": "p34_planche.jpeg",
+  "type": "planche",
+  "paragraph": 34,
+  "pdf_page": 39,
+  "size": [
+   457,
+   833
+  ],
+  "caption": "Une créature montée sur le dos d'un Kraan fond sur vous sans crier gare."
+ },
+ {
+  "file": "p41_planche.jpeg",
+  "type": "planche",
+  "paragraph": 41,
+  "pdf_page": 42,
+  "size": [
+   475,
+   837
+  ],
+  "caption": "Le chef des Gloks ordonne à ses congénères de vous tirer dessus."
+ },
+ {
+  "file": "p51_planche.jpeg",
+  "type": "planche",
+  "paragraph": 51,
+  "pdf_page": 46,
+  "size": [
+   499,
+   834
+  ],
+  "caption": "Le mur de rondins s'est écroulé en plusieurs endroits..."
+ },
+ {
+  "file": "p57_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 57,
+  "pdf_page": 49,
+  "size": [
+   348,
+   156
+  ]
+ },
+ {
+  "file": "p63_planche.jpeg",
+  "type": "planche",
+  "paragraph": 63,
+  "pdf_page": 52,
+  "size": [
+   467,
+   836
+  ],
+  "caption": "Le vieil homme fou vous insulte à grands cris..."
+ },
+ {
+  "file": "p70_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 70,
+  "pdf_page": 55,
+  "size": [
+   324,
+   138
+  ]
+ },
+ {
+  "file": "p76_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 76,
+  "pdf_page": 57,
+  "size": [
+   331,
+   158
+  ]
+ },
+ {
+  "file": "p81_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 81,
+  "pdf_page": 59,
+  "size": [
+   321,
+   193
+  ]
+ },
+ {
+  "file": "p91_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 91,
+  "pdf_page": 63,
+  "size": [
+   325,
+   156
+  ]
+ },
+ {
+  "file": "p97_planche.jpeg",
+  "type": "planche",
+  "paragraph": 97,
+  "pdf_page": 65,
+  "size": [
+   464,
+   846
+  ],
+  "caption": "Un énorme Gourgaz brandit une Hache Noire au-dessus de sa tête."
+ },
+ {
+  "file": "p105_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 105,
+  "pdf_page": 68,
+  "size": [
+   283,
+   188
+  ]
+ },
+ {
+  "file": "p112_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 112,
+  "pdf_page": 71,
+  "size": [
+   321,
+   193
+  ]
+ },
+ {
+  "file": "p121_planche.jpeg",
+  "type": "planche",
+  "paragraph": 121,
+  "pdf_page": 75,
+  "size": [
+   472,
+   839
+  ],
+  "caption": "Le corbeau noir est perché sur le bras tendu de l'homme vêtu de rouge."
+ },
+ {
+  "file": "p130_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 130,
+  "pdf_page": 78,
+  "size": [
+   320,
+   139
+  ]
+ },
+ {
+  "file": "p131_planche.jpeg",
+  "type": "planche",
+  "paragraph": 131,
+  "pdf_page": 80,
+  "size": [
+   473,
+   830
+  ],
+  "caption": "Un Théurgiste de la Guilde des Magiciens de Toran, tient tête aux créatures déchaînées."
+ },
+ {
+  "file": "p142_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 142,
+  "pdf_page": 85,
+  "size": [
+   319,
+   143
+  ],
+  "a_verifier": "barque : rien de tel dans le texte du 142 (décor réutilisé, aussi en 152)",
+  "meme_image_que": [
+   152
+  ]
+ },
+ {
+  "file": "p152_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 152,
+  "pdf_page": 88,
+  "size": [
+   319,
+   143
+  ],
+  "a_verifier": "barque : le 152 parle de potions et a déjà sa planche (décor réutilisé)",
+  "meme_image_que": [
+   142
+  ]
+ },
+ {
+  "file": "p152_planche.jpeg",
+  "type": "planche",
+  "paragraph": 152,
+  "pdf_page": 89,
+  "size": [
+   517,
+   832
+  ],
+  "caption": "L'herboriste vous offre tout un choix de potions."
+ },
+ {
+  "file": "p156_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 156,
+  "pdf_page": 92,
+  "size": [
+   321,
+   143
+  ]
+ },
+ {
+  "file": "p160_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 160,
+  "pdf_page": 93,
+  "size": [
+   310,
+   144
+  ],
+  "a_verifier": "emblème au serpent : le Serpent de Pierre apparaît au 161"
+ },
+ {
+  "file": "p169_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 169,
+  "pdf_page": 97,
+  "size": [
+   269,
+   86
+  ],
+  "a_verifier": "épée générique (décor réutilisé en 169, 207, 255)"
+ },
+ {
+  "file": "p170_planche.jpeg",
+  "type": "planche",
+  "paragraph": 170,
+  "pdf_page": 98,
+  "size": [
+   462,
+   834
+  ],
+  "caption": "Un Gluâtre des Profondeurs essaye de vous étrangler de ses longs tentacules visqueux."
+ },
+ {
+  "file": "p175_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 175,
+  "pdf_page": 101,
+  "size": [
+   306,
+   192
+  ]
+ },
+ {
+  "file": "p187_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 187,
+  "pdf_page": 104,
+  "size": [
+   343,
+   170
+  ]
+ },
+ {
+  "file": "p190_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 190,
+  "pdf_page": 105,
+  "size": [
+   223,
+   126
+  ],
+  "a_verifier": "cabane en planches : pas d'indice clair dans le texte du 190"
+ },
+ {
+  "file": "p200_planche.jpeg",
+  "type": "planche",
+  "paragraph": 200,
+  "pdf_page": 109,
+  "size": [
+   469,
+   839
+  ],
+  "caption": "Vous distinguez une roulotte tirée par six chevaux qui se déplace à grande vitesse."
+ },
+ {
+  "file": "p207_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 207,
+  "pdf_page": 111,
+  "size": [
+   260,
+   80
+  ],
+  "a_verifier": "épée générique (décor réutilisé en 169, 207, 255)"
+ },
+ {
+  "file": "p212_planche.jpeg",
+  "type": "planche",
+  "paragraph": 212,
+  "pdf_page": 114,
+  "size": [
+   444,
+   828
+  ],
+  "caption": "Un homme se tient devant vous, une coupe remplie d'herbes entre les mains."
+ },
+ {
+  "file": "p229_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 229,
+  "pdf_page": 119,
+  "size": [
+   161,
+   93
+  ]
+ },
+ {
+  "file": "p235_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 235,
+  "pdf_page": 121,
+  "size": [
+   345,
+   149
+  ],
+  "a_verifier": "crâne : le squelette du roi apparaît au 236"
+ },
+ {
+  "file": "p246_planche.jpeg",
+  "type": "planche",
+  "paragraph": 246,
+  "pdf_page": 125,
+  "size": [
+   473,
+   825
+  ],
+  "caption": "L'homme rejette son capuchon et vous vous apercevez qu'il s'agit d'un terrible Drakkarim."
+ },
+ {
+  "file": "p250_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 250,
+  "pdf_page": 127,
+  "size": [
+   215,
+   205
+  ]
+ },
+ {
+  "file": "p255_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 255,
+  "pdf_page": 129,
+  "size": [
+   240,
+   68
+  ]
+ },
+ {
+  "file": "p263_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 263,
+  "pdf_page": 132,
+  "size": [
+   335,
+   152
+  ]
+ },
+ {
+  "file": "p267_planche.jpeg",
+  "type": "planche",
+  "paragraph": 267,
+  "pdf_page": 134,
+  "size": [
+   502,
+   843
+  ],
+  "caption": "A l'intérieur du sac, vous trouvez un Message écrit sur une peau d'animal."
+ },
+ {
+  "file": "p273_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 273,
+  "pdf_page": 136,
+  "size": [
+   344,
+   151
+  ],
+  "meme_image_que": [
+   340
+  ]
+ },
+ {
+  "file": "p279_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 279,
+  "pdf_page": 139,
+  "size": [
+   349,
+   311
+  ]
+ },
+ {
+  "file": "p284_planche.jpeg",
+  "type": "planche",
+  "paragraph": 284,
+  "pdf_page": 142,
+  "size": [
+   463,
+   824
+  ],
+  "caption": "Des vapeurs pestilentielles s'exhalent des cryptes entrouvertes."
+ },
+ {
+  "file": "p291_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 291,
+  "pdf_page": 145,
+  "size": [
+   325,
+   149
+  ]
+ },
+ {
+  "file": "p298_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 298,
+  "pdf_page": 147,
+  "size": [
+   209,
+   140
+  ]
+ },
+ {
+  "file": "p307_planche.jpeg",
+  "type": "planche",
+  "paragraph": 307,
+  "pdf_page": 150,
+  "size": [
+   470,
+   829
+  ],
+  "caption": "Vous tombez nez à nez avec un ermite recroquevillé dans un coin de la pièce."
+ },
+ {
+  "file": "p310_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 310,
+  "pdf_page": 152,
+  "size": [
+   317,
+   98
+  ]
+ },
+ {
+  "file": "p315_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 315,
+  "pdf_page": 153,
+  "size": [
+   313,
+   158
+  ]
+ },
+ {
+  "file": "p322_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 322,
+  "pdf_page": 156,
+  "size": [
+   236,
+   113
+  ]
+ },
+ {
+  "file": "p331_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 331,
+  "pdf_page": 160,
+  "size": [
+   256,
+   144
+  ]
+ },
+ {
+  "file": "p334_planche.jpeg",
+  "type": "planche",
+  "paragraph": 334,
+  "pdf_page": 162,
+  "size": [
+   483,
+   821
+  ],
+  "caption": "Vous apercevez quatre soldats et leur officier qui portent des uniformes de l'Armée Royale."
+ },
+ {
+  "file": "p340_vignette.jpeg",
+  "type": "vignette",
+  "paragraph": 340,
+  "pdf_page": 165,
+  "size": [
+   344,
+   151
+  ],
+  "a_verifier": "fort : même image qu'en 273 (décor réutilisé)",
+  "meme_image_que": [
+   273
+  ]
+ },
+ {
+  "file": "p341_planche.jpeg",
+  "type": "planche",
+  "paragraph": 341,
+  "pdf_page": 166,
+  "size": [
+   486,
+   814
+  ],
+  "caption": "Les soldats ne croient pas votre histoire et refusent de vous laisser entrer."
+ },
+ {
+  "file": "p350_planche.jpeg",
+  "type": "planche",
+  "paragraph": 350,
+  "pdf_page": 171,
+  "size": [
+   466,
+   838
+  ],
+  "caption": "Les visages du Roi et de ses conseillers expriment l'inquiétude et la concentration."
+ }
+]

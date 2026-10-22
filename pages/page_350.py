@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai, is_new_page
+from inventory import display_inventory, check_inventory, end_page, has_kai, is_new_page, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -64,6 +64,8 @@ with tab1:
         "Le Loup Solitaire reprendra la route dans le tome 2, *La Traversée Infernale*."
     )
     st.page_link("hero.py", label="Retour à l'accueil", icon="🏠")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

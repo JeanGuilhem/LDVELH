@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai, spend_gold
+from inventory import display_inventory, check_inventory, end_page, has_kai, spend_gold, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -38,6 +38,8 @@ with tab1:
         stream_text("Si vous n'avez pas cette somme, ou si vous ne souhaitez pas la lui payer, rendez-vous au :")
     )
     st.page_link("pages/page_247.py", label="247", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai, has_item
+from inventory import display_inventory, check_inventory, end_page, has_kai, has_item, show_illustrations
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -72,6 +72,8 @@ vous avez une Clé d'Or, rendez-vous au""")
         if fi:
 
             st.page_link("pages/page_326.py", label="326", icon="📄", disabled=True)
+
+    show_illustrations()
 
 
 with tab2:

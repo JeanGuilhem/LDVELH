@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 from text import fr_unkown_kai
 
@@ -72,6 +72,8 @@ with tab1:
                     )
             )
             st.page_link("pages/page_141.py", label="141", icon="📄", disabled=True)
+
+    show_illustrations()
 
 
 

@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, pickup_button, pickup_gold
+from inventory import display_inventory, check_inventory, end_page, pickup_button, pickup_gold, show_illustrations
 from utils import stream_text, called_cookies
 
 
@@ -39,6 +39,8 @@ with tab1:
     fi = True
     if fi:
         st.page_link("pages/page_172.py", label="172", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

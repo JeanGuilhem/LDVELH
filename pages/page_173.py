@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_item
+from inventory import display_inventory, check_inventory, end_page, has_item, show_illustrations
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -33,6 +33,8 @@ with tab1:
 
     st.write_stream(stream_text("Si vous n'avez pas cette Clé, rendez-vous au :"))
     st.page_link("pages/page_259.py", label="259", icon="📄", disabled=has_key)
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

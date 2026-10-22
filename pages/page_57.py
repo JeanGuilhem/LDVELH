@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -52,6 +52,8 @@ préférez quitter la cabane et inspecter l'écurie, rendez-vous au"""
     fi_2 = True
     if fi_2:
         st.page_link("pages/page_308.py", label="308", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

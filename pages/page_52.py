@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from text import fr_unkown_kai
 from utils import stream_text, set_cookies, called_cookies
 
@@ -46,6 +46,8 @@ cache derrière. Rendez-vous pour cela au """)
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_250.py", label="250", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

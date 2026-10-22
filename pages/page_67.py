@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -28,6 +28,8 @@ with tab1:
     st.write(fr_text)
     st.write_stream(stream_text("Rendez-vous au :"))
     st.page_link("pages/page_140.py", label="140", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

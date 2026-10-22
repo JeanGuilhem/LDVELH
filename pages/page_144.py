@@ -5,8 +5,7 @@ from inventory import (
     end_page,
     choose_item_to_lose,
     change_endurance,
-    is_new_page,
-)
+    is_new_page, show_illustrations)
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -53,6 +52,8 @@ with tab1:
 
         st.write_stream(stream_text("Si vous préférez essayer d'éviter l'affrontement, rendez-vous au :"))
         st.page_link("pages/page_217.py", label="217", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

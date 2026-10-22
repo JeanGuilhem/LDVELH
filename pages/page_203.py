@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, change_endurance, is_new_page
+from inventory import display_inventory, check_inventory, end_page, change_endurance, is_new_page, show_illustrations
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -32,6 +32,8 @@ with tab1:
     else:
         st.write_stream(stream_text("Il vous reste moins de 10 points d'ENDURANCE, rendez-vous au :"))
         st.page_link("pages/page_344.py", label="344", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

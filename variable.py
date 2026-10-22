@@ -343,6 +343,9 @@ Votre tâche est de convertir le contenu brut d'un chapitre du livre "Loup Solit
 
 11. Mort: Si la phrase 'Votre mission s'achève ici' apparaît, appeler ls_death() après l'affichage du message.
 
+11bis. Illustrations: la dernière ligne du bloc 'with tab1:' est TOUJOURS show_illustrations() (importé de inventory),
+    après les choix de destination. Elle affiche l'illustration du paragraphe s'il en a une, sinon ne fait rien.
+
 12. Fin de Page: Le code doit OBLIGATOIREMENT se terminer par (hors de tout bloc, sans indentation) :
     end_page()
 

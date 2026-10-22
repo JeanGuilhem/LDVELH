@@ -1,6 +1,6 @@
 
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies, handle_repas, ls_death, table_des_hasards
 
 
@@ -38,6 +38,8 @@ with tab1:
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_264.py", label="264", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

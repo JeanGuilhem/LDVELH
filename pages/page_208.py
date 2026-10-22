@@ -1,6 +1,6 @@
 import streamlit as st
 from combat import combat
-from inventory import display_inventory, check_inventory, end_page
+from inventory import display_inventory, check_inventory, end_page, show_illustrations
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -28,6 +28,8 @@ with tab1:
         st.page_link("pages/page_148.py", label="148", icon="📄")
         st.write_stream(stream_text("Vous pouvez également retourner dans la forêt. Rendez-vous alors au :"))
         st.page_link("pages/page_320.py", label="320", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

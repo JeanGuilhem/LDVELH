@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai, has_item
+from inventory import display_inventory, check_inventory, end_page, has_kai, has_item, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -51,6 +51,8 @@ Vordak, rendez-vous au"""
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_292.py", label="292", icon="📄")
+
+    show_illustrations()
 
 
 

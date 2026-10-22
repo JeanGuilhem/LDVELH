@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -38,6 +38,8 @@ pouvez sauter en marche de la roulotte en vous rendant au:""")
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_234.py", label="234", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

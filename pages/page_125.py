@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."
@@ -62,6 +62,8 @@ with tab1:
         st.page_link("pages/page_301.py", label="301", icon="📄", disabled=True)
     
     # SAUVEGARDE DE LA PAGE ACTUELLE POUR LES FUTURS RE-RUNS
+
+    show_illustrations()
 
 
 with tab2:

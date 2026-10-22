@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, called_cookies, handle_repas
 from text import fr_unkown_kai
 
@@ -38,6 +38,8 @@ with tab1:
     else:
         st.write_stream(stream_text(fr_unkown_kai))
         st.page_link("pages/page_282.py", label="282", icon="📄", disabled=True)
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

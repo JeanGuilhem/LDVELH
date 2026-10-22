@@ -1,6 +1,6 @@
 
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies, ls_death
 
 
@@ -32,6 +32,8 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 with tab1:
     st.write(fr_text)
     ls_death()
+
+    show_illustrations()
 
 
 with tab2:

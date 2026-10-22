@@ -10,6 +10,7 @@ Cycle de vie d'une page de paragraphe :
     end_page()                               # dernière ligne de la page
 """
 import functools
+import json
 import unicodedata
 
 import streamlit as st
@@ -123,6 +124,29 @@ def _reset_page_flags() -> None:
 def is_new_page() -> bool:
     """True au premier rendu d'une page, False lors des reruns (clic sur un bouton...)."""
     return st.session_state.last_page_number != st.session_state.current_page_number
+
+
+ILLUSTRATIONS_DIR = "static/illustrations"
+
+
+@functools.lru_cache(maxsize=None)
+def _illustrations_index() -> dict:
+    """{numéro de paragraphe: [illustrations]} d'après static/illustrations/illustrations.json."""
+    try:
+        with open(f"{ILLUSTRATIONS_DIR}/illustrations.json", encoding="utf-8") as index_file:
+            entries = json.load(index_file)
+    except (OSError, ValueError):
+        return {}
+    index = {}
+    for entry in entries:
+        index.setdefault(entry["paragraph"], []).append(entry)
+    return index
+
+
+def show_illustrations() -> None:
+    """Affiche les illustrations du paragraphe en cours, comme dans le livre : après les choix."""
+    for entry in _illustrations_index().get(st.session_state.current_page_number, []):
+        st.image(f"{ILLUSTRATIONS_DIR}/{entry['file']}", caption=entry.get("caption"))
 
 
 @functools.lru_cache(maxsize=None)

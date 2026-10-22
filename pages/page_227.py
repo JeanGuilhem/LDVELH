@@ -1,6 +1,6 @@
 import streamlit as st
 from combat import combat
-from inventory import display_inventory, check_inventory, end_page
+from inventory import display_inventory, check_inventory, end_page, show_illustrations
 from utils import stream_text, called_cookies
 
 if "weapon_mastery" not in st.session_state:
@@ -31,6 +31,8 @@ with tab1:
     elif outcome == "win":
         st.write_stream(stream_text("Vous avez tué la Vipère sans perdre aucun point d'ENDURANCE, rendez-vous au :"))
         st.page_link("pages/page_348.py", label="348", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

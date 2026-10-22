@@ -1,5 +1,5 @@
 streamlit # last version
 extra-streamlit-components-better-cookie-manager # for cookies
-google-genai
+# google-genai  optional: if we want to autmaticaly use gemini to generate chapter
 pandas
 PyMuPDF

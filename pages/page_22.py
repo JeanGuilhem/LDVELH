@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page
+from inventory import display_inventory, check_inventory, end_page, show_illustrations
 from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
@@ -27,6 +27,8 @@ with tab1:
         st.page_link("pages/page_181.py", label="181", icon="📄")
     elif number is not None:
         st.page_link("pages/page_145.py", label="145", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

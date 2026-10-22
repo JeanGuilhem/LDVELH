@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -42,6 +42,8 @@ rendez-vous au""")
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_184.py", label="184", icon="📄")
+
+    show_illustrations()
 
 
 

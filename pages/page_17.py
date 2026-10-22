@@ -1,6 +1,6 @@
 import streamlit as st
 from combat import combat
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, called_cookies, hazard_roll
 
 if "weapon_mastery" not in st.session_state:
@@ -39,6 +39,8 @@ with tab1:
             st.page_link("pages/page_274.py", label="274", icon="📄")
         elif number is not None:
             st.page_link("pages/page_331.py", label="331", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

@@ -6,8 +6,7 @@ from inventory import (
     has_kai,
     is_new_page,
     lose_all_weapons,
-    lose_backpack,
-)
+    lose_backpack, show_illustrations)
 from utils import stream_text, called_cookies
 from text import fr_unkown_kai
 
@@ -58,6 +57,8 @@ with tab1:
         st.page_link("pages/page_127.py", label="127", icon="📄", disabled=True)
     else:
         st.page_link("pages/page_127.py", label="127", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -31,6 +31,8 @@ Brosses à Potence et rendez-vous au"""
     fi = True
     if fi:
         st.page_link("pages/page_272.py", label="272", icon="📄")
+
+    show_illustrations()
 
 with tab2:
     display_inventory()

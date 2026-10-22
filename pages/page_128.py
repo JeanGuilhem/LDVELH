@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies
 
 fr_unkown_kai = "Vous ne maîtrisez pas cette discipline Kaï."
@@ -55,6 +55,8 @@ vie du soldat. Rendez-vous alors au:"""
     fi_1 = True
     if fi_1:
         st.page_link("pages/page_336.py", label="336", icon="📄")
+
+    show_illustrations()
 
 
 with tab2:

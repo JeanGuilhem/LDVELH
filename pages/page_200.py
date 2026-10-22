@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, add_to_inventory, end_page, has_kai, show_illustrations
 from utils import stream_text, set_cookies, called_cookies, handle_repas, ls_death, table_des_hasards
 
 
@@ -52,6 +52,8 @@ attachés sur le toit en vous rendant au:"""
     else:
         st.write_stream(stream_text(fr_unkown_kai))
         st.page_link("pages/page_168.py", label="168", icon="📄", disabled=True)
+
+    show_illustrations()
 
 
 with tab2:
