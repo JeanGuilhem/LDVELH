@@ -1,4 +1,4 @@
-fr_presentation = "Vous vous apprêtez à démarrer une aventure, qui je l'espère vous fera voyager autant que le petit garcon que j'étais il y 15 ans, découvrant pour la première fois le monde fantastique des Livre Dont Vous Etes le Heros."
+fr_presentation = "Vous vous apprêtez à démarrer une aventure, qui je l'espère vous fera voyager autant que le petit garcon que j'étais, découvrant pour la première fois le monde fantastique des Livre Dont Vous Etes le Heros."
 
 fr_unkown_kai = """*Cette maitrise vous est inconnue*"""
 
