@@ -36,7 +36,7 @@ with tab1:
 Vordak, rendez-vous au"""
         )
     )
-    if has_item("Pierre de Vordak"):
+    if has_item("PIERRE PRÉCIEUSE"):
         fi = True
         if fi:
             st.page_link("pages/page_236.py", label="236", icon="📄")

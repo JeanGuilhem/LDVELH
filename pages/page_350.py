@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, is_new_page
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -56,6 +56,14 @@ tab1, tab2, tab3 = st.tabs(["Page", "Inventaire", "Carte"])
 
 with tab1:
     st.write(fr_text)
+
+    if is_new_page():
+        st.balloons()
+    st.success(
+        "**Mission accomplie !** Vous avez atteint Holmgard et averti le Roi. "
+        "Le Loup Solitaire reprendra la route dans le tome 2, *La Traversée Infernale*."
+    )
+    st.page_link("hero.py", label="Retour à l'accueil", icon="🏠")
 
 with tab2:
     display_inventory()

@@ -45,7 +45,7 @@ with tab1:
             f"""Enfin, si vous maîtrisez la Discipline Kaï du Sens de l'Orientation, rendez-vous au:"""
         )
     )
-    if has_kai("Le Sens de l'Orientation"):
+    if has_kai("L'Orientation"):
         st.page_link("pages/page_67.py", label="67", icon="📄")
     else:
         st.write_stream(stream_text(fr_unkown_kai))

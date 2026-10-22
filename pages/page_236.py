@@ -1,5 +1,5 @@
 import streamlit as st
-from inventory import display_inventory, check_inventory, end_page, has_kai
+from inventory import display_inventory, check_inventory, end_page, has_kai, change_endurance, remove_from_inventory
 from utils import stream_text, set_cookies, called_cookies
 
 
@@ -35,10 +35,11 @@ with tab1:
     st.write(fr_text)
 
     if st.session_state.last_page_number != st.session_state.current_page_number:
-        st.session_state.endurance -= 6
-        st.metric(label="Endurance", value=st.session_state.endurance, delta=-6)
+        remove_from_inventory("PIERRE PRÉCIEUSE")  # la Pierre de Vordak est détruite
         st.session_state.hability -= 1
-        st.metric(label="Habilité", value=st.session_state.hability, delta=-1)
+        change_endurance(-6)
+    st.metric(label="Endurance", value=st.session_state.endurance, delta=-6)
+    st.metric(label="Habileté", value=st.session_state.hability, delta=-1)
 
     st.write_stream(
         stream_text(f"""Rendez-vous au:""")
