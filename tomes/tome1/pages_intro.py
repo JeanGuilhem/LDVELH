@@ -10,6 +10,7 @@ if "weapon_mastery" not in st.session_state:
 
 init_state()
 st.session_state.game_phase = "playing"
+st.session_state.book = 1
 st.session_state.current_page_number = 0
 st.session_state.last_page_number = 0
 

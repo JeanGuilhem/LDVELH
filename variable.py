@@ -11,6 +11,7 @@ MAX_PURSE = 50
 #   mastery         : arme de référence pour la Maîtrise des armes (ex: LANCE DE GLOK -> LANCE)
 #   heal            : ENDURANCE rendue quand l'objet est utilisé (consommé)
 #   combat_hability : bonus d'HABILETÉ pour la durée d'un combat (consommé)
+#   combat_bonus    : bonus d'HABILETÉ à chaque combat tant que l'objet est porté (non consommé)
 #   endurance_bonus : bonus au total d'ENDURANCE tant que l'objet est porté
 ITEMS = {
     # --- Armes ---
@@ -75,6 +76,16 @@ ITEMS = {
         "type": "special",
         "description": "Vingt Pierres Précieuses, rangées dans votre bourse.",
     },
+    "SCEAU D'HAMMARDAL": {
+        "type": "special",
+        "description": "Un anneau que vous portez à un doigt de votre main droite.",
+    },
+    "BOUCLIER": {
+        "type": "special",
+        "combat_bonus": 2,
+        "description": "Il vous donne 2 points d'HABILETÉ supplémentaires lorsque vous en faites usage "
+        "au cours d'un combat.",
+    },
     "ESSENCE D'ALETHER": {
         "type": "special",
         "combat_hability": 2,
@@ -108,6 +119,33 @@ STARTING_ITEM_TABLE = {
     8: "LANCE",
     9: 12,  # douze Couronnes
     0: "GLAIVE",
+}
+
+# Les tomes de la série : dossier des pages (tomes/tome<N>/), titre, paragraphe final (= victoire)
+BOOKS = {
+    1: {"title": "Les Maîtres des Ténèbres", "final_page": 350},
+    2: {"title": "La Traversée Infernale", "final_page": 350},
+}
+
+# Équipement reçu au début du tome 2 (cf. « Équipement »), par les héros venus du tome 1 comme
+# par les nouveaux. Les héros du tome 1 peuvent échanger une ou deux de leurs armes.
+BOOK2_EQUIPMENT = {
+    "gold_base": 10,  # Couronnes : 10 + Table de Hasard, ajoutées à celles déjà possédées
+    "items_to_choose": 2,
+    "items": [
+        "ÉPÉE",
+        "SABRE",
+        "REPAS",  # deux Repas
+        "COTTE DE MAILLES",
+        "MASSE D'ARMES",
+        "POTION DE GUÉRISON",
+        "BÂTON",
+        "LANCE",
+        "GLAIVE",
+        "BOUCLIER",
+    ],
+    # « Au départ de votre quête, vous êtes en possession du Sceau d'Hammardal » et d'une carte
+    "special": ["SCEAU D'HAMMARDAL", "CARTE GÉOGRAPHIQUE"],
 }
 
 KAI = {

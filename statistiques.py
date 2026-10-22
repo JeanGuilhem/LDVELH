@@ -7,8 +7,8 @@ import hmac
 import pandas as pd
 import streamlit as st
 
-from game_stats import VICTORY_PAGE, load_events
-from variable import KAI, STARTING_ITEM_TABLE, WEAPON_MASTERY_TABLE
+from game_stats import load_events
+from variable import BOOKS, KAI, STARTING_ITEM_TABLE, WEAPON_MASTERY_TABLE
 
 st.set_page_config(page_title="Statistiques", page_icon="📊", layout="wide")
 st.title("📊 Statistiques des parties")
@@ -32,8 +32,8 @@ def check_password() -> bool:
 
 
 @st.cache_data(ttl=300, show_spinner="Chargement des statistiques...")
-def events() -> pd.DataFrame:
-    return pd.DataFrame(load_events(), columns=["game_id", "event", "page", "data", "created_at"])
+def events(book: int) -> pd.DataFrame:
+    return pd.DataFrame(load_events(book), columns=["game_id", "event", "page", "data", "created_at"])
 
 
 def item_label(item) -> str:
@@ -63,7 +63,9 @@ if not check_password():
 if st.button("🔄 Rafraîchir"):
     events.clear()
 
-df = events()
+book = st.selectbox("Tome", list(BOOKS), format_func=lambda n: f"Tome {n} — {BOOKS[n]['title']}")
+final_page = BOOKS[book]["final_page"]
+df = events(book)
 if df.empty:
     st.info("Aucune partie enregistrée pour l'instant.")
     st.stop()
@@ -121,15 +123,16 @@ if not heroes.empty:
         weapons = sorted(set(WEAPON_MASTERY_TABLE))
         table(counts(heroes.weapon_mastery.explode().dropna(), weapons, "Arme"))
     with right:
-        st.subheader("Objet de départ")
-        items = [item_label(item) for item in STARTING_ITEM_TABLE.values()]
-        table(counts(heroes.starting_item.map(item_label), items, "Objet"))
+        if book == 1:
+            st.subheader("Objet de départ")
+            items = [item_label(item) for item in STARTING_ITEM_TABLE.values()]
+            table(counts(heroes.starting_item.map(item_label), items, "Objet"))
     st.divider()
 
 # --- Paragraphes ---------------------------------------------------------------------
 visits = pd.concat([pages, deaths]).drop_duplicates(["game_id", "page"]).groupby("page").size()
-never = sorted(set(range(1, VICTORY_PAGE + 1)) - set(visits.index.astype(int)))
-st.metric("Paragraphes visités", f"{VICTORY_PAGE - len(never)} / {VICTORY_PAGE}")
+never = sorted(set(range(1, final_page + 1)) - set(visits.index.astype(int)))
+st.metric("Paragraphes visités", f"{final_page - len(never)} / {final_page}")
 left, right = st.columns(2)
 with left:
     st.subheader("Paragraphes les plus meurtriers")

@@ -6,6 +6,8 @@ Une partie = un identifiant aléatoire (game_id), sans aucune donnée personnell
     page     premier affichage d'un paragraphe (cf. end_page)
     death    mort du héros (cf. ls_death)
     victory  arrivée au dernier paragraphe du tome
+Chaque événement porte le tome en cours : un héros qui passe au tome suivant y commence une
+nouvelle partie (nouvel identifiant).
 
 L'envoi se fait en arrière-plan et ne bloque jamais le jeu : sans configuration
 (secrets [supabase]), avec LDVELH_STATS=off (bot de test) ou si Supabase est injoignable,
@@ -18,9 +20,9 @@ import uuid
 import requests
 import streamlit as st
 
+from variable import BOOKS
+
 TABLE = "game_events"
-BOOK = 1
-VICTORY_PAGE = 350
 TIMEOUT = 5
 
 
@@ -56,7 +58,7 @@ def record(event: str, page: int = None, data: dict = None) -> None:
         st.session_state.game_id = str(uuid.uuid4())
     row = {
         "game_id": st.session_state.game_id,
-        "book": BOOK,
+        "book": st.session_state.get("book", 1),
         "event": event,
         "page": page,
         "data": data or {},
@@ -64,8 +66,8 @@ def record(event: str, page: int = None, data: dict = None) -> None:
     threading.Thread(target=_post, args=(*config, row), daemon=True).start()
 
 
-def record_start(starting_item) -> None:
-    """Nouvelle partie : nouvel identifiant, puis le profil du héros."""
+def record_start(**details) -> None:
+    """Nouvelle partie : nouvel identifiant, puis le profil du héros et `details` (objet de départ...)."""
     st.session_state.game_id = str(uuid.uuid4())
     st.session_state.pages_visited = 0
     record(
@@ -75,7 +77,7 @@ def record_start(starting_item) -> None:
             "endurance": st.session_state.total_endurance,
             "kai": st.session_state.kai,
             "weapon_mastery": st.session_state.weapon_mastery,
-            "starting_item": starting_item,
+            **details,
         },
     )
 
@@ -83,9 +85,10 @@ def record_start(starting_item) -> None:
 def record_page() -> None:
     """À appeler au premier affichage d'un paragraphe (cf. end_page)."""
     page = st.session_state.current_page_number
+    book = st.session_state.get("book", 1)
     st.session_state.pages_visited = st.session_state.get("pages_visited", 0) + 1
     record("page", page, {"endurance": st.session_state.endurance, "purse": st.session_state.purse})
-    if page == VICTORY_PAGE:
+    if page == BOOKS[book]["final_page"]:
         record(
             "victory",
             page,
@@ -105,7 +108,7 @@ def record_death() -> None:
     )
 
 
-def load_events(book: int = BOOK) -> list:
+def load_events(book: int = 1) -> list:
     """Tous les événements d'un tome (pour la page de statistiques), par paquets de 1000."""
     config = _config()
     if config is None:

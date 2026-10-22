@@ -16,9 +16,13 @@ from variable import KAI, STARTING_ITEM_TABLE, WEAPON_MASTERY_TABLE
 
 # Une nouvelle partie commence à chaque fois qu'on arrive sur cette page depuis ailleurs.
 # Les reruns de la page (clics sur les boutons) ne doivent pas tout effacer.
+# creation_request : posé par la page de départ du tome 2 juste avant d'envoyer ici, pour y créer
+# un nouveau héros. Il est consommé tout de suite : la création suivante sera celle du tome 1.
 if st.session_state.get("game_phase") != "creation":
+    creation_book = st.session_state.pop("creation_request", 1)
     reset_state()
     st.session_state.game_phase = "creation"
+    st.session_state.creation_book = creation_book
 
 
 def roll() -> int:
@@ -162,7 +166,7 @@ def first_inventory_check() -> bool:
         if st.button("Cliquez ici pour fouiller les ruines.."):
             st.session_state.item_roll = roll()
             apply_starting_item(st.session_state.item_roll)
-            record_start(STARTING_ITEM_TABLE[st.session_state.item_roll])
+            record_start(starting_item=STARTING_ITEM_TABLE[st.session_state.item_roll])
             st.rerun()
         return False
 
@@ -178,7 +182,10 @@ with tab1:
         st.divider()
         if determine_kai_mastery():
             st.divider()
-            if first_inventory_check():
+            if st.session_state.creation_book == 2:
+                # l'équipement du tome 2 est remis sur sa page de départ
+                st.page_link("tomes/tome2/debut.py", label="Recevoir mon équipement", icon="🎒")
+            elif first_inventory_check():
                 st.divider()
                 with st.expander(label="Afficher mon inventaire"):
                     display_inventory()

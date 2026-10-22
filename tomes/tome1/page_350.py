@@ -61,8 +61,9 @@ with tab1:
         st.balloons()
     st.success(
         "**Mission accomplie !** Vous avez atteint Holmgard et averti le Roi. "
-        "Le Loup Solitaire reprendra la route dans le tome 2, *La Traversée Infernale*."
+        "Le Loup Solitaire peut reprendre la route dans le tome 2, *La Traversée Infernale*."
     )
+    st.page_link("tomes/tome2/debut.py", label="Continuer avec le tome 2", icon="📜")
     st.page_link("accueil.py", label="Retour à l'accueil", icon="🏠")
 
     show_illustrations()

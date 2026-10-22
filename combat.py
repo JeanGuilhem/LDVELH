@@ -86,6 +86,9 @@ def combat_hability(
         is_mastered(weapon) for weapon in st.session_state.weapons
     ):
         apply(2, "Maîtrise des armes")
+    for item in st.session_state.special:
+        if item_info(item).get("combat_bonus"):
+            apply(item_info(item)["combat_bonus"], item.capitalize())
     if has_kai("Puissance psychique"):
         if psychic_immune:
             details.append("Puissance psychique : sans effet sur cet ennemi")

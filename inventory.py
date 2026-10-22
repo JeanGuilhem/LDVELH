@@ -18,7 +18,7 @@ import streamlit as st
 from game_stats import record_page
 from save import delete_save, page_path, save_game
 from utils import ls_death
-from variable import ITEMS, KAI, MAX_BACKPACK, MAX_PURSE, MAX_WEAPONS
+from variable import BOOKS, ITEMS, KAI, MAX_BACKPACK, MAX_PURSE, MAX_WEAPONS
 
 BACKPACK_ITEM = "SAC À DOS"
 MAX_VISIBILITY_FLAGS = 10
@@ -36,6 +36,8 @@ DEFAULT_STATE = {
     "weapon_mastery": [],
     "current_page_number": 0,
     "last_page_number": 0,
+    "book": 1,  # tome en cours
+    "completed_books": [],
     "done_fighting": False,
     "flee": False,
     "page_has_fight": False,
@@ -127,14 +129,15 @@ def is_new_page() -> bool:
     return st.session_state.last_page_number != st.session_state.current_page_number
 
 
-ILLUSTRATIONS_DIR = "static/illustrations/tome1"
+def illustrations_dir(book: int) -> str:
+    return f"static/illustrations/tome{book}"
 
 
 @functools.lru_cache(maxsize=None)
-def _illustrations_index() -> dict:
-    """{numéro de paragraphe: [illustrations]} d'après {ILLUSTRATIONS_DIR}/illustrations.json."""
+def _illustrations_index(book: int) -> dict:
+    """{numéro de paragraphe: [illustrations]} d'après static/illustrations/tome<N>/illustrations.json."""
     try:
-        with open(f"{ILLUSTRATIONS_DIR}/illustrations.json", encoding="utf-8") as index_file:
+        with open(f"{illustrations_dir(book)}/illustrations.json", encoding="utf-8") as index_file:
             entries = json.load(index_file)
     except (OSError, ValueError):
         return {}
@@ -146,32 +149,35 @@ def _illustrations_index() -> dict:
 
 def show_illustrations() -> None:
     """Affiche les illustrations du paragraphe en cours, comme dans le livre : après les choix."""
-    for entry in _illustrations_index().get(st.session_state.current_page_number, []):
-        st.image(f"{ILLUSTRATIONS_DIR}/{entry['file']}", caption=entry.get("caption"))
+    book = st.session_state.book
+    for entry in _illustrations_index(book).get(st.session_state.current_page_number, []):
+        st.image(f"{illustrations_dir(book)}/{entry['file']}", caption=entry.get("caption"))
 
 
 @functools.lru_cache(maxsize=None)
-def _page_has_fight(page_number: int) -> bool:
+def _page_has_fight(book: int, page_number: int) -> bool:
     """Un paragraphe contient un combat si sa page appelle combat()."""
     try:
-        with open(page_path(page_number), encoding="utf-8") as page_file:
+        with open(page_path(page_number, book), encoding="utf-8") as page_file:
             return "combat(" in page_file.read()
     except OSError:
         return False
 
 
-def check_inventory(is_fighting: bool = False, current_page_number: int = 0) -> None:
+def check_inventory(is_fighting: bool = False, current_page_number: int = 0, book: int = 1) -> None:
     """
     À appeler en haut de chaque page de paragraphe.
     is_fighting: conservé pour compatibilité, les combats sont détectés automatiquement.
+    book: tome de la page (les pages du tome 1 ne le précisent pas).
     """
     init_state()
+    st.session_state.book = book
     st.session_state.current_page_number = current_page_number
     st.set_page_config(page_title=f"Paragraphe {current_page_number}", page_icon="📜")
     st.header(f"📜 Paragraphe {current_page_number}", divider="gray")
     if is_new_page():
         _reset_page_flags()
-        st.session_state.page_has_fight = is_fighting or _page_has_fight(current_page_number)
+        st.session_state.page_has_fight = is_fighting or _page_has_fight(book, current_page_number)
         _apply_healing()
 
 
@@ -209,6 +215,10 @@ def end_page() -> None:
         ls_death()
 
     if is_new_page():
+        book = st.session_state.book
+        if st.session_state.current_page_number == BOOKS[book]["final_page"]:
+            if book not in st.session_state.completed_books:
+                st.session_state.completed_books.append(book)
         record_page()
     st.session_state.last_page_number = st.session_state.current_page_number
     save_game()

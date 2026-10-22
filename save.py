@@ -13,7 +13,6 @@ import streamlit as st
 
 SAVE_COOKIE = "ls_save"
 SAVE_VERSION = 1
-BOOK_DIR = "tomes/tome1"  # paragraphes du tome en cours
 
 # Clés de st.session_state qui constituent une partie
 SAVED_KEYS = [
@@ -28,6 +27,8 @@ SAVED_KEYS = [
     "kai",
     "weapon_mastery",
     "current_page_number",
+    "book",  # tome en cours
+    "completed_books",
     "game_id",  # statistiques (cf. game_stats.py)
     "pages_visited",
 ]
@@ -39,11 +40,16 @@ def _cookie_manager() -> stx.CookieManager:
     return st.session_state.cookie_manager
 
 
-def page_path(page_number: int) -> str:
+def book_dir(book: int = None) -> str:
+    """Dossier des pages d'un tome (par défaut le tome en cours)."""
+    return f"tomes/tome{book or st.session_state.get('book', 1)}"
+
+
+def page_path(page_number: int, book: int = None) -> str:
     """Fichier Streamlit correspondant à un numéro de paragraphe (0 = introduction)."""
     if int(page_number) == 0:
-        return f"{BOOK_DIR}/pages_intro.py"
-    return f"{BOOK_DIR}/page_{int(page_number)}.py"
+        return f"{book_dir(book)}/pages_intro.py"
+    return f"{book_dir(book)}/page_{int(page_number)}.py"
 
 
 def save_game() -> None:

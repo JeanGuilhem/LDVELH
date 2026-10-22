@@ -1,5 +1,6 @@
 import streamlit as st
 from save import apply_save, page_path, read_save
+from variable import BOOKS
 from inventory import init_state
 from utils import stream_text
 from text import fr_presentation
@@ -23,16 +24,20 @@ else:
 
 saved_game = read_save()
 if isinstance(saved_game, dict):
-    if st.button(
-        f"Reprendre mon aventure (paragraphe {saved_game['current_page_number']})", icon="📜"
-    ):
+    book = saved_game.get("book") or 1
+    page = saved_game["current_page_number"]
+    where = f"paragraphe {page}" if page else "introduction"
+    if st.button(f"Reprendre mon aventure (tome {book}, {where})", icon="📜"):
         init_state()
         apply_save(saved_game)
         st.session_state.game_phase = "playing"
-        st.switch_page(page_path(saved_game["current_page_number"]))
+        st.switch_page(page_path(page, book))
     st.caption("Démarrer une nouvelle aventure effacera votre sauvegarde.")
 
-st.page_link("tomes/tome1/crafting_hero.py", label="Démarrer une nouvelle aventure", icon="⚔️")
+st.page_link(
+    "tomes/tome1/crafting_hero.py", label=f"Tome 1 — {BOOKS[1]['title']}", icon="⚔️"
+)
+st.page_link("tomes/tome2/debut.py", label=f"Tome 2 — {BOOKS[2]['title']}", icon="⛵")
 st.page_link("tomes/tome1/rules.py", label="Règles", icon="🧙‍♂️")
 
 st.caption(
